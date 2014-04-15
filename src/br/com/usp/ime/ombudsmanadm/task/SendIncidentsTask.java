@@ -24,8 +24,8 @@ public class SendIncidentsTask extends AsyncTask<Object, Object, String> {
 
 	@Override
 	protected void onPreExecute() {
-		progress = ProgressDialog.show(context, "Aguarde...",
-				"Envio de dados para a web", true, true);
+		progress = ProgressDialog.show(context, "@string/wait",
+				"@string/sendData", true, true);
 	}
 
 	@Override
