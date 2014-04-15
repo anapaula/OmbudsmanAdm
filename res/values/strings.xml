@@ -3,5 +3,6 @@
 
     <string name="app_name">Ouvidoria Adm</string>
     <string name="sync">Sincronizar</string>
+    <string name="search">Pesquisar</string>
 
 </resources>

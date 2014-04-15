@@ -49,11 +49,26 @@ public class IncidentDAO extends SQLiteOpenHelper {
 		List<Incident> incidents = new ArrayList<Incident>();
 		
 		Cursor cs = getWritableDatabase().query(TABLE_NAME, COLS, null, null, null, null, null);
+		
 		while(cs.moveToNext()) {
 			Incident incident = getIncidentFromCursor(cs);
 			incidents.add(incident);
 		}
 		cs.close();
+		
+		return incidents;
+	}
+	
+	public List<Incident> getIncidentsByKeyValue(String key) {
+		List<Incident> incidents = new ArrayList<Incident>();
+		
+		Cursor cs = getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE description like '%?%'", new String[]{ key });
+		
+		while(cs.moveToNext()) {
+			Incident incident = getIncidentFromCursor(cs);
+			incidents.add(incident);
+		}
+		cs.close();		
 		
 		return incidents;
 	}

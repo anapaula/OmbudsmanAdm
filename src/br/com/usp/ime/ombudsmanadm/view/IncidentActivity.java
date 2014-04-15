@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 import android.view.View;
 import br.com.usp.ime.ombudsmanadm.R;
@@ -53,6 +56,11 @@ public class IncidentActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.incident_menu, menu);
+		
+		SearchManager manager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+		SearchView view = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+		view.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -61,8 +69,9 @@ public class IncidentActivity extends Activity {
 		switch (item.getItemId()) {
 		case R.id.menu_sync :
 			new LoadNewIncidentsTask(this).execute();
-			return false;
-			
+			return true;
+		case R.id.menu_search :
+			return true;
 		default :
 			return super.onOptionsItemSelected(item);
 		}

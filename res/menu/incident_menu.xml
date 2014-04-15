@@ -5,5 +5,10 @@
         android:title="@string/sync"
         android:showAsAction="always"
         android:icon="@drawable/sync"/>
-
+    <item
+        android:id="@+id/menu_search"
+        android:title="@string/search"
+        android:showAsAction="always"
+        android:icon="@drawable/search"
+        android:actionViewClass="android.widget.SearchView"/>
 </menu>
