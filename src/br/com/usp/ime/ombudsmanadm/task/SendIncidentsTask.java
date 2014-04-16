@@ -10,6 +10,7 @@ import br.com.usp.ime.ombudsmanadm.model.bo.IncidentConverter;
 import br.com.usp.ime.ombudsmanadm.model.dao.IncidentDAO;
 import br.com.usp.ime.ombudsmanadm.model.dao.IncidentSqLiteDAO;
 import br.com.usp.ime.ombudsmanadm.model.vo.Incident;
+import br.com.usp.ime.ombudsmanadm.util.ConnectionException;
 import br.com.usp.ime.ombudsmanadm.util.WebClient;
 
 public class SendIncidentsTask extends AsyncTask<Object, Object, String> {
@@ -34,7 +35,12 @@ public class SendIncidentsTask extends AsyncTask<Object, Object, String> {
 		List<Incident> incidentList = dao.getIncidents();
 		dao.close();
 		String jsonList = new IncidentConverter().toJSON(incidentList);
-		String responseJson = new WebClient(address).post(jsonList);
+		String responseJson = null;
+		try {
+			responseJson = new WebClient(address).post(jsonList);
+		} catch (ConnectionException e) {
+			e.printStackTrace();
+		}
 		return responseJson;
 	}
 

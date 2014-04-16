@@ -96,13 +96,16 @@ public class Incident {
 
 	public ContentValues toContentValues() {
 		ContentValues values = new ContentValues();
-
+		
+		values.put("id", this.getId());
 		values.put("uspNumber", this.getUspNumber());
 		values.put("description", this.getDescription());
-		values.put("localCategory", this.getLocalization());
+		values.put("localization", this.getLocalization());
 		values.put("latitude", this.getLatitude());
 		values.put("longitude", this.getLongitude());
 		values.put("photo", this.getPhoto());
+		values.put("createdAt", this.getCreatedAt());
+		values.put("updatedAt", this.getUpdatedAt());
 
 		return values;
 	}

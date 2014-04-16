@@ -46,7 +46,7 @@ public class IncidentSqLiteDAO extends SQLiteOpenHelper implements IncidentDAO {
 	public List<Incident> getIncidents() {
 		List<Incident> incidents = new ArrayList<Incident>();
 
-		Cursor cs = getWritableDatabase().query(TABLE_NAME, COLS, null, null,
+		Cursor cs = getReadableDatabase().query(TABLE_NAME, COLS, null, null,
 				null, null, null);
 
 		while (cs.moveToNext()) {
@@ -57,44 +57,36 @@ public class IncidentSqLiteDAO extends SQLiteOpenHelper implements IncidentDAO {
 
 		return incidents;
 	}
+	
+	public long getLastIncidentId() {
+		Cursor cs = getReadableDatabase().query(TABLE_NAME, new String[] {"max(id)"}, null, null, null, null, null);
+		if (cs.getPosition() != -1) {
+			Incident incident = getIncidentFromCursor(cs);
+			return incident.getId();
+		} else {
+			return 0L;
+		}
+	}
 
 	public List<Incident> getIncidentsByKeyValue(String key) {
 		List<Incident> incidents = new ArrayList<Incident>();
 
-		Cursor cs = getReadableDatabase()
-				.rawQuery(
-						"SELECT * FROM " + TABLE_NAME
-								+ " WHERE description like '%?%'",
-						new String[] { key });
+		Cursor cs = getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_NAME
+								+ " WHERE description like '%?%'", new String[] { key });
 
 		while (cs.moveToNext()) {
 			Incident incident = getIncidentFromCursor(cs);
 			incidents.add(incident);
 		}
+		
 		cs.close();
 
 		return incidents;
 	}
 
-	private Incident getIncidentFromCursor(Cursor cs) {
-		Incident incident = new Incident();
-		incident.setId(cs.getLong(0));
-		incident.setUspNumber(cs.getLong(1));
-		incident.setDescription(cs.getString(2));
-		incident.setLocalization(cs.getString(3));
-		incident.setLatitude(cs.getFloat(4));
-		incident.setLongitude(cs.getFloat(5));
-		incident.setPhoto(cs.getBlob(6));
-		incident.setCreatedAt(cs.getString(7));
-		incident.setUpdatedAt(cs.getString(8));
-
-		return incident;
-	}
-
 	@Override
 	public Incident getIncidentById(Long id) {
-		Cursor c = getWritableDatabase().query(TABLE_NAME, COLS, "id=?",
-				new String[] { id.toString() }, null, null, null);
+		Cursor c = getReadableDatabase().query(TABLE_NAME, COLS, "id=?", new String[] { id.toString() }, null, null, null);
 		c.moveToFirst();
 		Incident incident = getIncidentFromCursor(c);
 		c.close();
@@ -120,5 +112,19 @@ public class IncidentSqLiteDAO extends SQLiteOpenHelper implements IncidentDAO {
 		getWritableDatabase().delete(TABLE_NAME, "id=?",
 				new String[] { incident.getId().toString() });
 	}
+	
+	private Incident getIncidentFromCursor(Cursor cs) {
+		Incident incident = new Incident();
+		incident.setId(cs.getLong(0));
+		incident.setUspNumber(cs.getLong(1));
+		incident.setDescription(cs.getString(2));
+		incident.setLocalization(cs.getString(3));
+		incident.setLatitude(cs.getFloat(4));
+		incident.setLongitude(cs.getFloat(5));
+		incident.setPhoto(cs.getBlob(6));
+		incident.setCreatedAt(cs.getString(7));
+		incident.setUpdatedAt(cs.getString(8));
 
+		return incident;
+	}
 }

@@ -15,5 +15,6 @@ public interface IncidentDAO {
 	public void insert(Incident incident);
 	public void update(Incident incident);
 	public void delete(Incident incident);
+	public long getLastIncidentId();
 	public void close();
 }

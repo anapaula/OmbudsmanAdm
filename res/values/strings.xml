@@ -5,6 +5,7 @@
     <string name="sync">Sincronizar</string>
     <string name="search">Pesquisar</string>
     <string name="wait">Aguarde...</string>
-    <string name="sendData">Envio de dados para a web</string>  
+    <string name="sendData">Envio de dados para a web</string>
+    <string name="getData">Obtendo dados da web</string>    
 
 </resources>

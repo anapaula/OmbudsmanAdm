@@ -2,15 +2,14 @@ package br.com.usp.ime.ombudsmanadm.view.adapter;
 
 import java.util.List;
 
-import br.com.usp.ime.ombudsmanadm.R;
-import br.com.usp.ime.ombudsmanadm.model.Incident;
-
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import br.com.usp.ime.ombudsmanadm.R;
+import br.com.usp.ime.ombudsmanadm.model.vo.Incident;
 
 public class IncidentListAdapter extends BaseAdapter {
 	
@@ -34,6 +33,9 @@ public class IncidentListAdapter extends BaseAdapter {
 
 	@Override
 	public long getItemId(int index) {
+		if (incidents.size() == 0) {
+			return 0;
+		}
 		return incidents.get(index).getId();
 	}
 

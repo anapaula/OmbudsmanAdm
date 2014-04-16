@@ -341,8 +341,11 @@ int string abc_searchview_description_voice 0x7f0b0008
 int string abc_shareactionprovider_share_with 0x7f0b000c
 int string abc_shareactionprovider_share_with_application 0x7f0b000b
 int string app_name 0x7f0b000d
+int string getData 0x7f0b0012
 int string search 0x7f0b000f
+int string sendData 0x7f0b0011
 int string sync 0x7f0b000e
+int string wait 0x7f0b0010
 int style AppBaseTheme 0x7f0c0083
 int style AppTheme 0x7f0c0084
 int style TextAppearance_AppCompat_Base_CompactMenu_Dialog 0x7f0c0063

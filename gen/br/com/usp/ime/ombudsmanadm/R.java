@@ -1155,8 +1155,11 @@ containing a value of this type.
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f0b000b;
         public static final int app_name=0x7f0b000d;
+        public static final int getData=0x7f0b0012;
         public static final int search=0x7f0b000f;
+        public static final int sendData=0x7f0b0011;
         public static final int sync=0x7f0b000e;
+        public static final int wait=0x7f0b0010;
     }
     public static final class style {
         /** 
