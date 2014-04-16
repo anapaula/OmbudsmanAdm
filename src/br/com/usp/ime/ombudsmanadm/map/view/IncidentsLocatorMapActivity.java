@@ -17,8 +17,10 @@ import br.com.usp.ime.ombudsmanadm.model.dao.IncidentDAO;
 import br.com.usp.ime.ombudsmanadm.model.dao.IncidentSqLiteDAO;
 import br.com.usp.ime.ombudsmanadm.model.vo.Incident;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -38,12 +40,10 @@ public class IncidentsLocatorMapActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_incidents_locator_map);
 
 		if (savedInstanceState == null) {
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
+			getSupportFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
 		}
 
-		MapFragment mapFragment = ((MapFragment) getFragmentManager()
-				.findFragmentById(R.id.map));
+		MapFragment mapFragment = ((MapFragment) getFragmentManager().findFragmentById(R.id.map));
 		GoogleMap googleMap = mapFragment.getMap();
 		for (Incident incident : getIncidents()) {
 			MarkerOptions markerOptions = new MarkerOptions();
@@ -53,6 +53,12 @@ public class IncidentsLocatorMapActivity extends ActionBarActivity {
 			markerOptions.snippet(incident.getLocalization());
 			googleMap.addMarker(markerOptions);
 		}
+		
+		/** Centraliza o mapa para o estado de São Paulo. Bearing define a posição da bússola. Tilt define o ângulo de visualização do mapa.
+		 * O método build constrói uma instância de CameraPosition que é passada como parâmetro para o método newCameraPosition.*/
+		CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(-22.411029, -49.002686)).zoom(17).
+				bearing(90).tilt(60).build();
+		googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
 	}
 
