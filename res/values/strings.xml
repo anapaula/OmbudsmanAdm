@@ -6,6 +6,9 @@
     <string name="search">Pesquisar</string>
     <string name="wait">Aguarde...</string>
     <string name="sendData">Envio de dados para a web</string>
-    <string name="getData">Obtendo dados da web</string>    
+    <string name="getData">Obtendo dados da web</string>
+    <string name="title_activity_incidents_locator_map">IncidentsLocatorMapActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
