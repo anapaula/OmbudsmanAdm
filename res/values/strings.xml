@@ -10,5 +10,6 @@
     <string name="title_activity_incidents_locator_map">IncidentsLocatorMapActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
+    <string name="incidentsMapActivityTitle">Mapa de incidentes da USP</string>
+    
 </resources>

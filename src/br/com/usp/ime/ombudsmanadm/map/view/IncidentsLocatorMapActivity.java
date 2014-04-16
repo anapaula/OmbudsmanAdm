@@ -19,7 +19,7 @@ import br.com.usp.ime.ombudsmanadm.model.vo.Incident;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -38,12 +38,14 @@ public class IncidentsLocatorMapActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_incidents_locator_map);
+		
+		setTitle("@string/incidentsMapActivityTitle");
 
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
 		}
 
-		MapFragment mapFragment = ((MapFragment) getFragmentManager().findFragmentById(R.id.map));
+		SupportMapFragment mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
 		GoogleMap googleMap = mapFragment.getMap();
 		for (Incident incident : getIncidents()) {
 			MarkerOptions markerOptions = new MarkerOptions();
