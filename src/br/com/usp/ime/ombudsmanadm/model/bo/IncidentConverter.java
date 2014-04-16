@@ -8,7 +8,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONStringer;
 
+import android.util.Log;
 import br.com.usp.ime.ombudsmanadm.model.vo.Incident;
+import br.com.usp.ime.ombudsmanadm.util.WebClient;
 
 public class IncidentConverter {
 
@@ -19,7 +21,7 @@ public class IncidentConverter {
 
 			for (Incident incident : incidents) {
 				jsonStringer.object().key("id").value(incident.getId())
-						.key("user").value(incident.getUspNumber())
+						.key("user").value(incident.getUser())
 						.key("description").value(incident.getDescription())
 						.key("localization").value(incident.getLocalization())
 						.key("latitude").value(incident.getLatitude())
@@ -42,21 +44,22 @@ public class IncidentConverter {
 		JSONObject root = new JSONObject(json);
 		JSONArray array = root.getJSONArray("incidentrecordlist");
 		
+		Log.d(IncidentConverter.class.getSimpleName(), " convertendo string json no objeto Incident");
 		for (int i = 0 ; i < array.length() ; i++) {
 			JSONObject objectRoot = array.getJSONObject(i);
 			JSONObject object = objectRoot.getJSONObject("incidentrecord");
 			
 			Incident incident = new Incident();
 			incident.setId(object.getLong("id"));
-			incident.setUspNumber(object.getLong("user"));
+			incident.setUser(object.getLong("user"));
 			incident.setDescription(object.getString("description"));
 			incident.setLocalization(object.getString("localization"));
-			incident.setLatitude(object.getDouble("latitude"));
-			incident.setLongitude(object.getDouble("longitude"));
+			incident.setLatitude(object.getString("latitude"));
+			incident.setLongitude(object.getString("longitude"));
 			incident.setPhoto(object.getString("photo").getBytes());
-			incident.setCreatedAt(object.getString("createdAt"));
-			incident.setUpdatedAt(object.getString("updatedAt"));
-			
+			incident.setCreatedAt(object.getString("created_at"));
+			incident.setUpdatedAt(object.getString("updated_at"));
+			Log.d(IncidentConverter.class.getSimpleName(), " object Incident convertido " + incident.toString());
 			incidents.add(incident);
 		}
 		

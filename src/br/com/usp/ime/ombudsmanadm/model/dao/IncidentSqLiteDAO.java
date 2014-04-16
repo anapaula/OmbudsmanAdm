@@ -16,7 +16,7 @@ public class IncidentSqLiteDAO extends SQLiteOpenHelper implements IncidentDAO {
 	private static final String TABLE_NAME = "INCIDENT";
 	private static final int VERSION = 1;
 
-	private static final String[] COLS = { "id", "uspNumber", "description",
+	private static final String[] COLS = { "id", "user", "description",
 			"localization", "latitude", "longitude", "photo", "createdAt",
 			"updatedAt" };
 
@@ -29,8 +29,8 @@ public class IncidentSqLiteDAO extends SQLiteOpenHelper implements IncidentDAO {
 		String ddl = "CREATE TABLE "
 				+ TABLE_NAME
 				+ "(id INTEGER PRIMARY KEY"
-				+ ", uspNumber INTEGER NOT NULL, description TEXT NOT NULL, localization TEXT NOT NULL"
-				+ ", latitude REAL NOT NULL, longitude REAL NOT NULL, photo BLOB NOT NULL,"
+				+ ", user INTEGER NOT NULL, description TEXT NOT NULL, localization TEXT NOT NULL"
+				+ ", latitude TEXT NOT NULL, longitude TEXT NOT NULL, photo BLOB NOT NULL,"
 				+ " createdAt TEXT NOT NULL, updatedAt TEXT NOT NULL);";
 
 		db.execSQL(ddl);
@@ -116,11 +116,11 @@ public class IncidentSqLiteDAO extends SQLiteOpenHelper implements IncidentDAO {
 	private Incident getIncidentFromCursor(Cursor cs) {
 		Incident incident = new Incident();
 		incident.setId(cs.getLong(0));
-		incident.setUspNumber(cs.getLong(1));
+		incident.setUser(cs.getLong(1));
 		incident.setDescription(cs.getString(2));
 		incident.setLocalization(cs.getString(3));
-		incident.setLatitude(cs.getFloat(4));
-		incident.setLongitude(cs.getFloat(5));
+		incident.setLatitude(cs.getString(4));
+		incident.setLongitude(cs.getString(5));
 		incident.setPhoto(cs.getBlob(6));
 		incident.setCreatedAt(cs.getString(7));
 		incident.setUpdatedAt(cs.getString(8));

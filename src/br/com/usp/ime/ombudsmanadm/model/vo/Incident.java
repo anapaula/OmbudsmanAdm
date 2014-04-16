@@ -1,15 +1,17 @@
 package br.com.usp.ime.ombudsmanadm.model.vo;
 
+import java.util.Arrays;
+
 import android.content.ContentValues;
 
 public class Incident {
 
 	private Long id;
-	private Long uspNumber;
+	private Long user;
 	private String description;
 	private String localization;
-	private double latitude;
-	private double longitude;
+	private String latitude;
+	private String longitude;
 	private byte[] photo;
 	private String createdAt;
 	private String updatedAt;
@@ -17,8 +19,8 @@ public class Incident {
 	public Incident() {
 	}
 
-	public Incident(Long uspNumber, String description) {
-		this.uspNumber = uspNumber;
+	public Incident(Long user, String description) {
+		this.user = user;
 		this.description = description;
 	}
 
@@ -30,12 +32,12 @@ public class Incident {
 		this.id = id;
 	}
 
-	public Long getUspNumber() {
-		return uspNumber;
+	public Long getUser() {
+		return user;
 	}
 
-	public void setUspNumber(Long uspNumber) {
-		this.uspNumber = uspNumber;
+	public void setUser(Long user) {
+		this.user = user;
 	}
 
 	public String getDescription() {
@@ -54,19 +56,19 @@ public class Incident {
 		this.localization = localization;
 	}
 
-	public double getLatitude() {
+	public String getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(double latitude) {
+	public void setLatitude(String latitude) {
 		this.latitude = latitude;
 	}
 
-	public double getLongitude() {
+	public String getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(double longitude) {
+	public void setLongitude(String longitude) {
 		this.longitude = longitude;
 	}	
 	
@@ -98,7 +100,7 @@ public class Incident {
 		ContentValues values = new ContentValues();
 		
 		values.put("id", this.getId());
-		values.put("uspNumber", this.getUspNumber());
+		values.put("user", this.getUser());
 		values.put("description", this.getDescription());
 		values.put("localization", this.getLocalization());
 		values.put("latitude", this.getLatitude());
@@ -110,7 +112,12 @@ public class Incident {
 		return values;
 	}
 
+	@Override
 	public String toString() {
-		return uspNumber + " - " + description;
+		return "Incident [id=" + id + ", user=" + user + ", description="
+				+ description + ", localization=" + localization
+				+ ", latitude=" + latitude + ", longitude=" + longitude
+				+ ", photo=" + Arrays.toString(photo) + ", createdAt="
+				+ createdAt + ", updatedAt=" + updatedAt + "]";
 	}
 }

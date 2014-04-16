@@ -11,6 +11,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import android.util.Log;
+
 public class WebClient {
 
     private final String url;
@@ -31,12 +33,15 @@ public class WebClient {
         get.addHeader("Accept", "application/json");
 
         try {
+        	Log.d(WebClient.class.getSimpleName(), "realizando a consulta a url " + url);
             HttpResponse response = request.execute(get);
             
             StatusLine status = response.getStatusLine();
             if (status.getStatusCode() == 200) {
+            	Log.d(WebClient.class.getSimpleName(), "retorno com sucesso da url " + url);
                 return EntityUtils.toString(response.getEntity());
             } else {
+            	Log.e(WebClient.class.getSimpleName(), "erro na consulta a url " + url);
             	throw new ConnectionException("O retorno da requisicao foi diferente de OK(200)");
             }
         } catch (IOException e) {
