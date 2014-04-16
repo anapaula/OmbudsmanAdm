@@ -54,9 +54,9 @@ public class IncidentsLocatorMapActivity extends ActionBarActivity {
 			googleMap.addMarker(markerOptions);
 		}
 		
-		/** Centraliza o mapa para o estado de São Paulo. Bearing define a posição da bússola. Tilt define o ângulo de visualização do mapa.
+		/** Centraliza o mapa no IME-USP. Bearing define a posição da bússola. Tilt define o ângulo de visualização do mapa.
 		 * O método build constrói uma instância de CameraPosition que é passada como parâmetro para o método newCameraPosition.*/
-		CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(-22.411029, -49.002686)).zoom(17).
+		CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(-23.558745, -46.731859)).zoom(17).
 				bearing(90).tilt(60).build();
 		googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
