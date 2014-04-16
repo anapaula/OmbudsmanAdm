@@ -1,5 +1,9 @@
 package br.com.usp.ime.ombudsmanadm.map.view;
 
+import java.util.List;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -9,8 +13,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import br.com.usp.ime.ombudsmanadm.R;
+import br.com.usp.ime.ombudsmanadm.model.dao.IncidentDAO;
+import br.com.usp.ime.ombudsmanadm.model.dao.IncidentSqLiteDAO;
+import br.com.usp.ime.ombudsmanadm.model.vo.Incident;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+@SuppressLint("NewApi")
 public class IncidentsLocatorMapActivity extends ActionBarActivity {
+
+	private final Context context;
+
+	public IncidentsLocatorMapActivity(Context context) {
+		super();
+		this.context = context;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +41,26 @@ public class IncidentsLocatorMapActivity extends ActionBarActivity {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
+
+		MapFragment mapFragment = ((MapFragment) getFragmentManager()
+				.findFragmentById(R.id.map));
+		GoogleMap googleMap = mapFragment.getMap();
+		for (Incident incident : getIncidents()) {
+			MarkerOptions markerOptions = new MarkerOptions();
+			markerOptions.position(new LatLng(Double.parseDouble(incident.getLatitude()), 
+					Double.parseDouble(incident.getLongitude())));
+			markerOptions.title(incident.getDescription());
+			markerOptions.snippet(incident.getLocalization());
+			googleMap.addMarker(markerOptions);
+		}
+
+	}
+
+	private List<Incident> getIncidents() {
+		IncidentDAO incidentDao = new IncidentSqLiteDAO(context);
+		List<Incident> incidents = incidentDao.getIncidents();
+		incidentDao.close();
+		return incidents;
 	}
 
 	@Override
