@@ -1,19 +1,14 @@
 package br.com.usp.ime.ombudsmanadm.map.view;
 
-import br.com.usp.ime.ombudsmanadm.R;
-import br.com.usp.ime.ombudsmanadm.R.id;
-import br.com.usp.ime.ombudsmanadm.R.layout;
-import br.com.usp.ime.ombudsmanadm.R.menu;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+import br.com.usp.ime.ombudsmanadm.R;
 
 public class IncidentsLocatorMapActivity extends ActionBarActivity {
 

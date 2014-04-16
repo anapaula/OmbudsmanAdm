@@ -10,7 +10,6 @@ import org.json.JSONStringer;
 
 import android.util.Log;
 import br.com.usp.ime.ombudsmanadm.model.vo.Incident;
-import br.com.usp.ime.ombudsmanadm.util.WebClient;
 
 public class IncidentConverter {
 
