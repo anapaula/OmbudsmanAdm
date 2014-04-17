@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import br.com.usp.ime.ombudsmanadm.R;
 import br.com.usp.ime.ombudsmanadm.model.vo.Incident;
 
 public class SearchListAdapter extends BaseAdapter {

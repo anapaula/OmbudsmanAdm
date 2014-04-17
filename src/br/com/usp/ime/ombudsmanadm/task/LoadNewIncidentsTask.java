@@ -13,7 +13,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.widget.Toast;
-import br.com.usp.ime.ombudsmanadm.R;
 import br.com.usp.ime.ombudsmanadm.model.bo.IncidentConverter;
 import br.com.usp.ime.ombudsmanadm.model.dao.IncidentDAO;
 import br.com.usp.ime.ombudsmanadm.model.dao.IncidentSqLiteDAO;

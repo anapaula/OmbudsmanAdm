@@ -17,7 +17,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
-import br.com.usp.ime.ombudsmanadm.R;
 import br.com.usp.ime.ombudsmanadm.model.dao.IncidentDAO;
 import br.com.usp.ime.ombudsmanadm.model.dao.IncidentSqLiteDAO;
 import br.com.usp.ime.ombudsmanadm.model.vo.Incident;

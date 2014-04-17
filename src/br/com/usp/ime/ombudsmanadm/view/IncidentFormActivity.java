@@ -12,7 +12,6 @@ import android.os.StrictMode;
 import android.util.Base64;
 import android.widget.ImageView;
 import android.widget.TextView;
-import br.com.usp.ime.ombudsmanadm.R;
 import br.com.usp.ime.ombudsmanadm.model.vo.Incident;
 import br.com.usp.ime.ombudsmanadm.util.ConnectionException;
 import br.com.usp.ime.ombudsmanadm.util.WebClient;
