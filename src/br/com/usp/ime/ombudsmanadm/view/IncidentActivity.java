@@ -26,7 +26,7 @@ import br.com.usp.ime.ombudsmanadm.view.adapter.IncidentListAdapter;
 
 public class IncidentActivity extends Activity {
 	
-	private static final int SECONDS = 10;
+	private static final int SECONDS = 1;
 	List<Incident> incidents;
 	ListView incidentListView;
 	

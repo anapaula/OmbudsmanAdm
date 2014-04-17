@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import br.com.usp.ime.ombudsmanadm.model.vo.Incident;
 
 public class IncidentSqLiteDAO extends SQLiteOpenHelper implements IncidentDAO {
@@ -60,8 +61,10 @@ public class IncidentSqLiteDAO extends SQLiteOpenHelper implements IncidentDAO {
 	
 	public long getLastIncidentId() {
 		Cursor cs = getReadableDatabase().rawQuery("SELECT max(id) FROM " + TABLE_NAME, null);
-		if (cs.getPosition() != -1) {
+		if (cs.getPosition() != 0) {
+			cs.moveToNext();
 			long max  = cs.getLong(0);
+			Log.i(IncidentSqLiteDAO.class.getSimpleName(), " ultimo incidente obtido " + max);
 			cs.close();
 			return max;
 		} else {

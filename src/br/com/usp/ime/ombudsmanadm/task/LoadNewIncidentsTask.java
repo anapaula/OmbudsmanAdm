@@ -1,5 +1,9 @@
 package br.com.usp.ime.ombudsmanadm.task;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 import org.json.JSONException;
@@ -45,20 +49,50 @@ public class LoadNewIncidentsTask extends AsyncTask<Object, Object, String> {
 		long lastId = dao.getLastIncidentId();
 		
 		try {
-			String json = new WebClient(String.format(URL, lastId + 1)).get();
-			List<Incident> incidents = new IncidentConverter().toIncidentList(json);
+			InputStream stream = new WebClient(String.format(URL, lastId + 1)).get();
 			
-			
-			for (Incident incident : incidents) {
-				dao.insert(incident);
+			if (stream != null) {
+				String json = getStringFromInputStream(stream);
+				List<Incident> incidents = new IncidentConverter().toIncidentList(json);
+				
+				for (Incident incident : incidents) {
+					dao.insert(incident);
+				}
+				dao.close();
+				
+				return (incidents.size() != 0) ? "Foram encontrados " + incidents.size() + " incidentes novos" : "Não há incidentes novos"; 
 			}
-			dao.close();
-			
-			return "novos incidentes obtidos com sucesso"; 
+			return null;
 		} catch (ConnectionException | JSONException e) {
 			e.printStackTrace();
-			return "erro ao obter ultimos incidentes, msg=" + e.getMessage();
+			return "erro ao obter os ultimos incidentes, msg=" + e.getMessage();
 		}
 	}
-
+	
+	private static String getStringFromInputStream(InputStream is) {
+		BufferedReader br = null;
+		StringBuilder sb = new StringBuilder();
+ 
+		String line;
+		try {
+ 
+			br = new BufferedReader(new InputStreamReader(is));
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+ 
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+ 
+		return sb.toString();
+	}
 }

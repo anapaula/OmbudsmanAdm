@@ -10,7 +10,6 @@ import org.json.JSONStringer;
 
 import android.util.Log;
 import br.com.usp.ime.ombudsmanadm.model.vo.Incident;
-import br.com.usp.ime.ombudsmanadm.util.WebClient;
 
 public class IncidentConverter {
 
@@ -41,48 +40,32 @@ public class IncidentConverter {
 	public List<Incident> toIncidentList(String json) throws JSONException {
 		List<Incident> incidents = new ArrayList<>();
 		
-		JSONObject root = new JSONObject(json);
-		JSONArray array = root.getJSONArray("incidentrecordlist");
-		
-		Log.d(IncidentConverter.class.getSimpleName(), " convertendo string json no objeto Incident");
-		for (int i = 0 ; i < array.length() ; i++) {
-			JSONObject objectRoot = array.getJSONObject(i);
-			JSONObject object = objectRoot.getJSONObject("incidentrecord");
+		try {
+			JSONObject root = new JSONObject(json);
+			JSONArray array = root.getJSONArray("incidentrecordlist");
 			
-			Incident incident = new Incident();
-			incident.setId(object.getLong("id"));
-			incident.setUser(object.getLong("user"));
-			incident.setDescription(object.getString("description"));
-			incident.setLocalization(object.getString("localization"));
-			incident.setLatitude(object.getString("latitude"));
-			incident.setLongitude(object.getString("longitude"));
-			incident.setPhoto(object.getString("photo").getBytes());
-			incident.setCreatedAt(object.getString("created_at"));
-			incident.setUpdatedAt(object.getString("updated_at"));
-			Log.d(IncidentConverter.class.getSimpleName(), " object Incident convertido " + incident.toString());
-			incidents.add(incident);
+			Log.d(IncidentConverter.class.getSimpleName(), " convertendo string json no objeto Incident");
+			for (int i = 0 ; i < array.length() ; i++) {
+				JSONObject objectRoot = array.getJSONObject(i);
+				JSONObject object = objectRoot.getJSONObject("incidentrecord");
+				
+				Incident incident = new Incident();
+				incident.setId(object.getLong("id"));
+				incident.setUser(object.getLong("user"));
+				incident.setDescription(object.getString("description"));
+				incident.setLocalization(object.getString("localization"));
+				incident.setLatitude(object.getString("latitude"));
+				incident.setLongitude(object.getString("longitude"));
+				incident.setPhoto(object.getString("photo").getBytes());
+				incident.setCreatedAt(object.getString("created_at"));
+				incident.setUpdatedAt(object.getString("updated_at"));
+				Log.d(IncidentConverter.class.getSimpleName(), " object Incident convertido " + incident.toString());
+				incidents.add(incident);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		return incidents;
 	}
-	
-//	public static void main(String[] args) throws JSONException {
-//		List<Incident> incidents = new ArrayList<>();
-//		Incident incident = new Incident();
-//		incident.setId(1L);
-//		incident.setDescription("teste");
-//		incident.setUspNumber(883772L);
-//		incident.setLocalization("Itaqua");
-//		incident.setLatitude(23232.23);
-//		incident.setLongitude(12121.32);
-//		incident.setPhoto("asdhkgsd7687".getBytes());
-//		incident.setCreatedAt("23.12.23");
-//		incident.setUpdatedAt("23.54.65");
-//		
-//		incidents.add(incident);
-//		
-//		String json = new IncidentConverter().toJSON(incidents);
-//		
-//		System.out.println(new IncidentConverter().toIncidentList(json));
-//	}
 }

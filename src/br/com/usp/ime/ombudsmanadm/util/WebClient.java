@@ -1,6 +1,7 @@
 package br.com.usp.ime.ombudsmanadm.util;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -26,7 +27,7 @@ public class WebClient {
      * @return
      * @throws ConnectionException
      */
-    public String get() throws ConnectionException {
+    public InputStream get() throws ConnectionException {
         HttpClient request = new DefaultHttpClient();
         HttpGet get = new HttpGet(url);
         get.addHeader("Content-type", "application/json");
@@ -39,7 +40,7 @@ public class WebClient {
             StatusLine status = response.getStatusLine();
             if (status.getStatusCode() == 200) {
             	Log.d(WebClient.class.getSimpleName(), "retorno com sucesso da url " + url);
-                return EntityUtils.toString(response.getEntity());
+                return response.getEntity().getContent();
             } else {
             	Log.e(WebClient.class.getSimpleName(), "erro na consulta a url " + url);
             	throw new ConnectionException("O retorno da requisicao foi diferente de OK(200)");
