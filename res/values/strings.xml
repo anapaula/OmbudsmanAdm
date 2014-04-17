@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="app_name">Ouvidoria Adm</string>
     <string name="sync">Sincronizar</string>
     <string name="search">Pesquisar</string>
-    <string name="wait">Aguarde...</string>
+    <string name="search_hint">Dica de pesquisa</string>
+    <string name="wait" tools:ignore="TypographyEllipsis">Aguarde...</string>
     <string name="sendData">Envio de dados para a web</string>
-    <string name="getData">Obtendo dados da web</string>    
+    <string name="getData">Obtendo dados da web</string>
+    
+    
+    <string name="form_name">Incidente</string>  
+    <string name="id">Número</string>   
+    <string name="user">Usuário</string>   
+    <string name="localization">Localização</string>   
+    <string name="description">Descrição</string>   
+    <string name="createdAt">Data de criação</string>   
+    <string name="updatedAt">Data de atualização</string>  
 
 </resources>

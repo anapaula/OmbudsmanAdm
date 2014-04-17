@@ -21,7 +21,7 @@ public class LoadNewIncidentsTask extends AsyncTask<Object, Object, String> {
 	
 	private Context context;
 	private ProgressDialog progress;
-	private static String URL = "http://uspservices.deusanyjunior.dj/incidente/54.json";
+	private static String URL = "http://uspservices.deusanyjunior.dj/incidente/%s.json";
 	
 	public LoadNewIncidentsTask(Context context) {
 		this.context = context;

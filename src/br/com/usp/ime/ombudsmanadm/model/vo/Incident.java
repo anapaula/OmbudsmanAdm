@@ -1,11 +1,17 @@
 package br.com.usp.ime.ombudsmanadm.model.vo;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 import android.content.ContentValues;
 
-public class Incident {
+public class Incident implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3605428064510488315L;
+	
 	private Long id;
 	private Long user;
 	private String description;

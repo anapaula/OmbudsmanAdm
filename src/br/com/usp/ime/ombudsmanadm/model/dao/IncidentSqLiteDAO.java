@@ -59,11 +59,13 @@ public class IncidentSqLiteDAO extends SQLiteOpenHelper implements IncidentDAO {
 	}
 	
 	public long getLastIncidentId() {
-		Cursor cs = getReadableDatabase().query(TABLE_NAME, new String[] {"max(id)"}, null, null, null, null, null);
+		Cursor cs = getReadableDatabase().rawQuery("SELECT max(id) FROM " + TABLE_NAME, null);
 		if (cs.getPosition() != -1) {
-			Incident incident = getIncidentFromCursor(cs);
-			return incident.getId();
+			long max  = cs.getLong(0);
+			cs.close();
+			return max;
 		} else {
+			cs.close();
 			return 0L;
 		}
 	}
@@ -72,7 +74,7 @@ public class IncidentSqLiteDAO extends SQLiteOpenHelper implements IncidentDAO {
 		List<Incident> incidents = new ArrayList<Incident>();
 
 		Cursor cs = getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_NAME
-								+ " WHERE description like '%?%'", new String[] { key });
+								+ " WHERE description like '%" + key + "%'", null);
 
 		while (cs.moveToNext()) {
 			Incident incident = getIncidentFromCursor(cs);

@@ -6,7 +6,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +26,7 @@ import br.com.usp.ime.ombudsmanadm.view.adapter.IncidentListAdapter;
 
 public class IncidentActivity extends Activity {
 	
-	private static final int SECONDS = 20;
+	private static final int SECONDS = 10;
 	List<Incident> incidents;
 	ListView incidentListView;
 	
@@ -42,7 +44,11 @@ public class IncidentActivity extends Activity {
 		incidentListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Toast.makeText(getApplicationContext(), "Item clicado" + position, SECONDS).show();
+				Toast.makeText(getApplicationContext(), "Item clicado " + position, SECONDS).show();
+				
+				Intent intent = new Intent(IncidentActivity.this, IncidentFormActivity.class);
+				intent.putExtra("incident", (Incident) incidentListView.getItemAtPosition(position));
+				startActivity(intent);
 			}
 		});
 		
@@ -69,6 +75,7 @@ public class IncidentActivity extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Log.d(IncidentActivity.class.getSimpleName(), "item selecionado " + item.getItemId());
 		switch (item.getItemId()) {
 		case R.id.menu_sync :
 			new LoadNewIncidentsTask(this).execute();
