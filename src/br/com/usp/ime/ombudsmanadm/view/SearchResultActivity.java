@@ -13,31 +13,28 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import br.com.usp.ime.ombudsmanadm.model.dao.IncidentDAO;
-import br.com.usp.ime.ombudsmanadm.model.dao.IncidentSqLiteDAO;
+import br.com.usp.ime.ombudsmanadm.R;
 import br.com.usp.ime.ombudsmanadm.model.vo.Incident;
+import br.com.usp.ime.ombudsmanadm.task.QueryExecutorTask;
+import br.com.usp.ime.ombudsmanadm.task.QueryExecutorTask.QueryExecutorCallBack;
 import br.com.usp.ime.ombudsmanadm.view.adapter.SearchListAdapter;
 
-public class SearchResultActivity extends Activity {
+public class SearchResultActivity extends Activity implements  QueryExecutorCallBack {
 	private static final int SECONDS = 1;
 	
-	private TextView textQuery;
-	private List<Incident> incidents;
+	private TextView resultSearch;
 	private ListView incidentListView;
+	
 	
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.search_result_list);
+		setContentView(R.layout.activity_search_list);
 		
-//		ActionBar actionBar = getActionBar();
-//		actionBar.setDisplayHomeAsUpEnabled(true);
-		
-		incidentListView = (ListView) findViewById(R.id.search_result_list);
-		
-		textQuery = (TextView)findViewById(R.id.txtQuery);
+		incidentListView = (ListView) findViewById(R.id.search_list);
+		resultSearch = (TextView)findViewById(R.id.result_search);
 		
 		handleIntent(getIntent());
 		
@@ -62,15 +59,16 @@ public class SearchResultActivity extends Activity {
 	private void handleIntent(Intent intent) {
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
-			
-			IncidentDAO dao = new IncidentSqLiteDAO(this);
-			incidents = dao.getIncidentsByKeyValue(query);
-			dao.close();
-			
-			textQuery.setText("Encontrados " + incidents.size() + " resultados");
-			
-			SearchListAdapter adapter = new SearchListAdapter(this, incidents);
-			incidentListView.setAdapter(adapter);
+			new QueryExecutorTask(this).execute(query);
 		}
+	}
+
+	@Override
+	public void onQueryExecutorReturn(List<Incident> incidents) {
+		resultSearch.setText(incidents.size() + " incidentes encontrados");
+		resultSearch.setBackgroundColor(this.getResources().getColor(R.color.search_result));
+		
+		SearchListAdapter adapter = new SearchListAdapter(this, incidents);
+		incidentListView.setAdapter(adapter);
 	}
 }

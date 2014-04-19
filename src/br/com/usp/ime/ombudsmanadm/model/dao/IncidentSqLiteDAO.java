@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import br.com.usp.ime.ombudsmanadm.model.vo.Incident;
+import br.com.usp.ime.ombudsmanadm.model.vo.Status;
 
 public class IncidentSqLiteDAO extends SQLiteOpenHelper implements IncidentDAO {
 
@@ -19,7 +20,7 @@ public class IncidentSqLiteDAO extends SQLiteOpenHelper implements IncidentDAO {
 
 	private static final String[] COLS = { "id", "user", "description",
 			"localization", "latitude", "longitude", "photo", "createdAt",
-			"updatedAt" };
+			"updatedAt", "status" };
 
 	public IncidentSqLiteDAO(Context context) {
 		super(context, DATABASE, null, VERSION);
@@ -32,7 +33,7 @@ public class IncidentSqLiteDAO extends SQLiteOpenHelper implements IncidentDAO {
 				+ "(id INTEGER PRIMARY KEY"
 				+ ", user INTEGER NOT NULL, description TEXT NOT NULL, localization TEXT NOT NULL"
 				+ ", latitude TEXT NOT NULL, longitude TEXT NOT NULL, photo BLOB NOT NULL,"
-				+ " createdAt TEXT NOT NULL, updatedAt TEXT NOT NULL);";
+				+ " createdAt TEXT NOT NULL, updatedAt TEXT NOT NULL, status TEXT NOT NULL);";
 
 		db.execSQL(ddl);
 	}
@@ -129,7 +130,8 @@ public class IncidentSqLiteDAO extends SQLiteOpenHelper implements IncidentDAO {
 		incident.setPhoto(cs.getBlob(6));
 		incident.setCreatedAt(cs.getString(7));
 		incident.setUpdatedAt(cs.getString(8));
-
+		incident.setStatus(Status.getFromString(cs.getString(9)));
+				
 		return incident;
 	}
 }

@@ -36,7 +36,7 @@ public class IncidentsLocatorMapActivity {
 //	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 //		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_incidents_locator_map);
+//		setContentView(R.layout.activity_incidents_locator_map);
 		
 //		setTitle("@string/incidentsMapActivityTitle");
 
@@ -85,9 +85,9 @@ public class IncidentsLocatorMapActivity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
+//		if (id == R.id.action_settings) {
+//			return true;
+//		}
 //		return super.onOptionsItemSelected(item);
 		return true;
 	}
@@ -103,9 +103,10 @@ public class IncidentsLocatorMapActivity {
 //		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(
-					R.layout.fragment_incidents_locator_map, container, false);
-			return rootView;
+//			View rootView = inflater.inflate(
+//					R.layout.fragment_incidents_locator_map, container, false);
+			//return rootView
+			return null;
 		}
 	}
 }

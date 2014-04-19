@@ -10,6 +10,7 @@ import org.json.JSONStringer;
 
 import android.util.Log;
 import br.com.usp.ime.ombudsmanadm.model.vo.Incident;
+import br.com.usp.ime.ombudsmanadm.model.vo.Status;
 
 public class IncidentConverter {
 
@@ -27,7 +28,8 @@ public class IncidentConverter {
 						.key("longitude").value(incident.getLongitude())
 						.key("photo").value(incident.getPhoto())
 						.key("createdAt").value(incident.getCreatedAt())
-						.key("updatedAt").value(incident.getUpdatedAt()).endObject();
+						.key("updatedAt").value(incident.getUpdatedAt())
+						.key("status").value(incident.getStatus().getStatusValue()).endObject();
 			}
 			return jsonStringer.endArray().endObject().endArray().endObject()
 					.toString();
@@ -59,7 +61,10 @@ public class IncidentConverter {
 				incident.setPhoto(object.getString("photo").getBytes());
 				incident.setCreatedAt(object.getString("created_at"));
 				incident.setUpdatedAt(object.getString("updated_at"));
+				incident.setStatus(Status.getFromString(object.getString("status")));
+				
 				Log.d(IncidentConverter.class.getSimpleName(), " object Incident convertido " + incident.toString());
+				
 				incidents.add(incident);
 			}
 		} catch (Exception e) {

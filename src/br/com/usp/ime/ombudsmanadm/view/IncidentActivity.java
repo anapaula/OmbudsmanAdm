@@ -17,28 +17,34 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
+import br.com.usp.ime.ombudsmanadm.R;
 import br.com.usp.ime.ombudsmanadm.model.dao.IncidentDAO;
 import br.com.usp.ime.ombudsmanadm.model.dao.IncidentSqLiteDAO;
 import br.com.usp.ime.ombudsmanadm.model.vo.Incident;
-import br.com.usp.ime.ombudsmanadm.task.LoadNewIncidentsTask;
+import br.com.usp.ime.ombudsmanadm.task.IncidentSynchronizerTask;
+import br.com.usp.ime.ombudsmanadm.task.IncidentSynchronizerTask.IncidentSynchronizerCallBack;
 import br.com.usp.ime.ombudsmanadm.view.adapter.IncidentListAdapter;
 
-public class IncidentActivity extends Activity {
+public class IncidentActivity extends Activity 
+implements IncidentSynchronizerCallBack {
 	
 	private static final int SECONDS = 1;
 	List<Incident> incidents;
 	ListView incidentListView;
+	IncidentListAdapter adapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.incident_list);
+		setContentView(R.layout.activity_incident_list);
 		
 		setTitle("Incidentes");
 		
 		incidentListView = (ListView) findViewById(R.id.incident_list);
 		
 		loadList();
+		
+		incidentListView.setTextFilterEnabled(true);
 		
 		incidentListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -77,8 +83,11 @@ public class IncidentActivity extends Activity {
 		Log.d(IncidentActivity.class.getSimpleName(), "item selecionado " + item.getItemId());
 		switch (item.getItemId()) {
 		case R.id.menu_sync :
-			new LoadNewIncidentsTask(this).execute();
-			loadList();
+			new IncidentSynchronizerTask(this).execute();
+			return true;
+		case R.id.submenu_filter_depto :
+			Intent intent = new Intent(IncidentActivity.this, SortedDepartmentActivity.class);
+			startActivity(intent);
 			return true;
 		case R.id.menu_search :
 			return true;
@@ -92,7 +101,15 @@ public class IncidentActivity extends Activity {
 		incidents = dao.getIncidents();
 		dao.close();
 		
-		IncidentListAdapter adapter = new IncidentListAdapter(this, incidents);
+		adapter = new IncidentListAdapter(this, incidents);
 		incidentListView.setAdapter(adapter);
+	}
+
+	@Override
+	public void onSynchReturn() {
+		incidents.clear();
+		adapter.notifyDataSetChanged();
+		
+		loadList();
 	}
 }

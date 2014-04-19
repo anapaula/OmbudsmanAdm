@@ -2,6 +2,7 @@ package br.com.usp.ime.ombudsmanadm.view;
 
 import java.io.InputStream;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -12,6 +13,7 @@ import android.os.StrictMode;
 import android.util.Base64;
 import android.widget.ImageView;
 import android.widget.TextView;
+import br.com.usp.ime.ombudsmanadm.R;
 import br.com.usp.ime.ombudsmanadm.model.vo.Incident;
 import br.com.usp.ime.ombudsmanadm.util.ConnectionException;
 import br.com.usp.ime.ombudsmanadm.util.WebClient;
@@ -28,12 +30,12 @@ public class IncidentFormActivity extends Activity {
 	private ImageView photoView;
 	private ImageView localView;
 	
-	@SuppressLint("NewApi")
+	@SuppressLint({ "NewApi", "SimpleDateFormat" })
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.incident_form);
+		setContentView(R.layout.activity_incident_form);
 		setTitle("Incidente");
 		
 		ActionBar actionBar = getActionBar();
@@ -60,7 +62,7 @@ public class IncidentFormActivity extends Activity {
 		String mapStaticUrl ="http://maps.google.com/maps/api/staticmap?" +
 				"center=" + URLEncoder.encode(latlon) +
 				"&zoom=12" +
-				"&size=300x300" +
+				"&size=1200x200" +
 				"&markers=color:red" +
 				URLEncoder.encode("|") +
 				"label:i" +
@@ -81,8 +83,14 @@ public class IncidentFormActivity extends Activity {
 		user.setText(""+incident.getUser());
 		localization.setText(incident.getLocalization());
 		description.setText(incident.getDescription());
-		createdAt.setText(incident.getCreatedAt());
-		updatedAt.setText(incident.getUpdatedAt());
+		
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+			createdAt.setText(sdf.format(incident.getCreatedAt()).toString());
+			updatedAt.setText(sdf.format(incident.getUpdatedAt()).toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override

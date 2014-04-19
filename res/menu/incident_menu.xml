@@ -5,10 +5,22 @@
         android:title="@string/sync"
         android:showAsAction="always"
         android:icon="@drawable/sync"/>
+    
     <item
         android:id="@+id/menu_search"
         android:title="@string/search"
         android:showAsAction="always"
         android:icon="@drawable/search"
         android:actionViewClass="android.widget.SearchView"/>
+    
+    <item
+        android:id="@+id/menu_filter"
+        android:title="@string/filter"
+        android:showAsAction="always"
+        android:icon="@drawable/filter">
+        <menu>
+            <item android:id="@+id/submenu_filter_depto"
+                android:title="@string/submenu_filter_depto"/>
+        </menu>
+    </item>
 </menu>

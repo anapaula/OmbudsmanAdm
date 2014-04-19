@@ -11,20 +11,25 @@
         android:glEsVersion="0x00020000"
         android:required="true"/>
 	    
-	<uses-permission android:name="android.permission.INTERNET" />
-	
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        
         <activity
-            android:name=".view.IncidentActivity"
-            android:label="@string/app_name" >
+            android:name=".view.LoginActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        
+        <activity
+            android:name=".view.IncidentActivity"
+            android:label="@string/app_name" >
             <meta-data 
             	android:name="android.app.default_searchable"
             	android:value=".view.SearchResultActivity"/>
@@ -44,18 +49,23 @@
             android:label="@string/form_name" >
         </activity>
         
+        <activity
+            android:name=".view.SortedIncidentActivity"
+            android:label="@string/sorted_name" >
+        </activity>
+
+        <activity
+            android:name=".view.SortedDepartmentActivity"
+            android:label="@string/sorted_dept_name" >
+        </activity>
+        
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="API_KEY" />
 
-<!--         <activity -->
-<!--             android:name="br.com.usp.ime.ombudsmanadm.map.view.IncidentsLocatorMapActivity" -->
-<!--             android:label="@string/title_activity_incidents_locator_map" > -->
-<!--         </activity> -->
 	</application>
 	
-    <permission android:name="br.com.usp.ime.ombudsmanadm.permission.MAPS_RECEIVE"
-        		android:protectionLevel="signature" tools:ignore="ManifestOrder"/>
+    <permission android:name="br.com.usp.ime.ombudsmanadm.permission.MAPS_RECEIVE" android:protectionLevel="signature"/>
     <uses-permission android:name="br.com.usp.ime.ombudsmanadm.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

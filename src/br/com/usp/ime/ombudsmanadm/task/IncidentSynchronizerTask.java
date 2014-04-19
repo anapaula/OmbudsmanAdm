@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.widget.Toast;
+import br.com.usp.ime.ombudsmanadm.R;
 import br.com.usp.ime.ombudsmanadm.model.bo.IncidentConverter;
 import br.com.usp.ime.ombudsmanadm.model.dao.IncidentDAO;
 import br.com.usp.ime.ombudsmanadm.model.dao.IncidentSqLiteDAO;
@@ -20,14 +21,20 @@ import br.com.usp.ime.ombudsmanadm.model.vo.Incident;
 import br.com.usp.ime.ombudsmanadm.util.ConnectionException;
 import br.com.usp.ime.ombudsmanadm.util.WebClient;
 
-public class LoadNewIncidentsTask extends AsyncTask<Object, Object, String> {
+public class IncidentSynchronizerTask extends AsyncTask<Object, Object, String> {
 	
 	private Context context;
+	private IncidentSynchronizerCallBack callBack;
 	private ProgressDialog progress;
 	private static String URL = "http://uspservices.deusanyjunior.dj/incidente/%s.json";
 	
-	public LoadNewIncidentsTask(Context context) {
+	public IncidentSynchronizerTask(Context context) {
 		this.context = context;
+		this.callBack = (IncidentSynchronizerCallBack)context;
+	}
+	
+	public interface IncidentSynchronizerCallBack {
+		public void onSynchReturn();
 	}
 	
 	@Override
@@ -40,6 +47,7 @@ public class LoadNewIncidentsTask extends AsyncTask<Object, Object, String> {
 	protected void onPostExecute(String result) {
 		progress.dismiss();
 		Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+		callBack.onSynchReturn();
 	}
 	
 	@Override
@@ -59,12 +67,12 @@ public class LoadNewIncidentsTask extends AsyncTask<Object, Object, String> {
 				}
 				dao.close();
 				
-				return (incidents.size() != 0) ? "Foram encontrados " + incidents.size() + " incidentes novos" : "Não há incidentes novos"; 
+				return (incidents.size() != 0) ? "Foram encontrados " + incidents.size() + " incidentes novos" : "Não existem novos incidentes"; 
 			}
 			return null;
 		} catch (ConnectionException | JSONException e) {
 			e.printStackTrace();
-			return "erro ao obter os ultimos incidentes, msg=" + e.getMessage();
+			return "Erro ao obter os ultimos incidentes, msg=" + e.getMessage();
 		}
 	}
 	

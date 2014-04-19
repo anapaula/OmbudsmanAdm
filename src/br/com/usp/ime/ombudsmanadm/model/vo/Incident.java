@@ -21,6 +21,7 @@ public class Incident implements Serializable {
 	private byte[] photo;
 	private String createdAt;
 	private String updatedAt;
+	private Status status;
 
 	public Incident() {
 	}
@@ -102,6 +103,14 @@ public class Incident implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
 	public ContentValues toContentValues() {
 		ContentValues values = new ContentValues();
 		
@@ -114,6 +123,7 @@ public class Incident implements Serializable {
 		values.put("photo", this.getPhoto());
 		values.put("createdAt", this.getCreatedAt());
 		values.put("updatedAt", this.getUpdatedAt());
+		values.put("status", this.getStatus().getStatusValue());
 
 		return values;
 	}
@@ -124,6 +134,7 @@ public class Incident implements Serializable {
 				+ description + ", localization=" + localization
 				+ ", latitude=" + latitude + ", longitude=" + longitude
 				+ ", photo=" + Arrays.toString(photo) + ", createdAt="
-				+ createdAt + ", updatedAt=" + updatedAt + "]";
+				+ createdAt + ", updatedAt=" + updatedAt + ", status=" + status.getStatusValue()
+				+ "]";
 	}
 }
