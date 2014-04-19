@@ -46,21 +46,25 @@
         
         <activity
             android:name=".view.IncidentFormActivity"
+            android:parentActivityName=".view.IncidentActivity"
             android:label="@string/form_name" >
         </activity>
         
         <activity
             android:name=".view.SortedIncidentActivity"
+            android:parentActivityName=".view.SortedDepartmentActivity"
             android:label="@string/sorted_name" >
         </activity>
 
         <activity
             android:name=".view.SortedDepartmentActivity"
+            android:parentActivityName=".view.IncidentActivity"
             android:label="@string/sorted_dept_name" >
         </activity>
 
         <activity
             android:name=".view.map.IncidentsMapActivity"
+            android:parentActivityName=".view.IncidentActivity"
             android:label="@string/map_name" >
         </activity>
         

@@ -3,6 +3,8 @@ package br.com.usp.ime.ombudsmanadm.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,12 +24,16 @@ public class SortedIncidentActivity extends Activity {
 	ListView incidentListView;
 	IncidentListAdapter adapter;
 	
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_incident_list);
 		
 		setTitle("Incidentes");
+		
+		ActionBar bar = getActionBar();
+		bar.setDisplayHomeAsUpEnabled(true);
 		
 		incidentListView = (ListView) findViewById(R.id.incident_list);
 		

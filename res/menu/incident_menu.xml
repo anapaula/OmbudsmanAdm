@@ -16,13 +16,13 @@
     <item
         android:id="@+id/menu_map"
         android:title="@string/map"
-        android:showAsAction="ifRoom"
+        android:showAsAction="always"
         android:icon="@drawable/map"/>
         
     <item
         android:id="@+id/menu_filter"
         android:title="@string/filter"
-        android:showAsAction="ifRoom"
+        android:showAsAction="always"
         android:icon="@drawable/filter">
         <menu>
             <item android:id="@+id/submenu_filter_depto"

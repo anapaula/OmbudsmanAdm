@@ -3,6 +3,7 @@ package br.com.usp.ime.ombudsmanadm.view;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
@@ -32,6 +33,9 @@ public class SearchResultActivity extends Activity implements  QueryExecutorCall
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_search_list);
+		
+		ActionBar bar = getActionBar();
+		bar.setDisplayHomeAsUpEnabled(true);
 		
 		incidentListView = (ListView) findViewById(R.id.search_list);
 		resultSearch = (TextView)findViewById(R.id.result_search);

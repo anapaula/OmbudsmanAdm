@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,10 +28,14 @@ public class SortedDepartmentActivity extends Activity implements IncidentSorter
 	private Map<String, List<Incident>> sortedIncidents;
 	private List<String> depts;
 	
+	@SuppressLint("NewApi")
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dept_list);
+        
+		ActionBar bar = getActionBar();
+		bar.setDisplayHomeAsUpEnabled(true);
         
         incidentListView = (ListView) findViewById(R.id.dept_list);
         
