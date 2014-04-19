@@ -28,4 +28,6 @@
     <string name="submenu_filter_status">Status do incidente</string>
     <string name="sorted_name">Incidentes ordenados</string>
     <string name="sorted_dept_name">Departamentos</string>
+    <string name="map_name">Incidentes no Mapa</string>
+    <string name="map">Incidentes no Mapa</string>
 </resources>

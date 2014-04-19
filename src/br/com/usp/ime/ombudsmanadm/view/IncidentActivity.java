@@ -1,5 +1,6 @@
 package br.com.usp.ime.ombudsmanadm.view;
 
+import java.io.Serializable;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -24,9 +25,9 @@ import br.com.usp.ime.ombudsmanadm.model.vo.Incident;
 import br.com.usp.ime.ombudsmanadm.task.IncidentSynchronizerTask;
 import br.com.usp.ime.ombudsmanadm.task.IncidentSynchronizerTask.IncidentSynchronizerCallBack;
 import br.com.usp.ime.ombudsmanadm.view.adapter.IncidentListAdapter;
+import br.com.usp.ime.ombudsmanadm.view.map.IncidentsMapActivity;
 
-public class IncidentActivity extends Activity 
-implements IncidentSynchronizerCallBack {
+public class IncidentActivity extends Activity implements IncidentSynchronizerCallBack {
 	
 	private static final int SECONDS = 1;
 	List<Incident> incidents;
@@ -86,10 +87,16 @@ implements IncidentSynchronizerCallBack {
 			new IncidentSynchronizerTask(this).execute();
 			return true;
 		case R.id.submenu_filter_depto :
-			Intent intent = new Intent(IncidentActivity.this, SortedDepartmentActivity.class);
-			startActivity(intent);
+			Intent intentOne = new Intent(IncidentActivity.this, SortedDepartmentActivity.class);
+			startActivity(intentOne);
 			return true;
 		case R.id.menu_search :
+			return true;
+		case R.id.menu_map :
+			Log.d(IncidentActivity.class.getSimpleName(), "item mapa escolhido");
+			Intent intentTwo = new Intent(IncidentActivity.this, IncidentsMapActivity.class);
+//			intentTwo.putExtra("incidents", (Serializable)incidents);
+			startActivity(intentTwo);
 			return true;
 		default :
 			return super.onOptionsItemSelected(item);

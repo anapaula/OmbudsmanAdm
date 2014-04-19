@@ -14,9 +14,15 @@
         android:actionViewClass="android.widget.SearchView"/>
     
     <item
+        android:id="@+id/menu_map"
+        android:title="@string/map"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/map"/>
+        
+    <item
         android:id="@+id/menu_filter"
         android:title="@string/filter"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:icon="@drawable/filter">
         <menu>
             <item android:id="@+id/submenu_filter_depto"
