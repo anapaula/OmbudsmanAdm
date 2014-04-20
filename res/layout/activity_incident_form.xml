@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:id="@+id/incident_form" >
     
     <ImageView
         android:id="@+id/photo"
@@ -15,7 +16,7 @@
     <ImageView
         android:id="@+id/local"
         android:layout_width="fill_parent"
-        android:layout_height="110dp"
+        android:layout_height="120dp"
         android:layout_gravity="center_horizontal"
         tools:ignore="ContentDescription" />
 	
@@ -149,5 +150,10 @@
 	       android:layout_height="wrap_content"
 	       android:textSize="16sp" />
 	</LinearLayout>
+
+    <Button
+        android:id="@+id/status"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"/>
 	
 </LinearLayout>

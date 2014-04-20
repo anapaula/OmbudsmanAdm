@@ -30,4 +30,10 @@
     <string name="sorted_dept_name">Departamentos</string>
     <string name="map_name">Incidentes no Mapa</string>
     <string name="map">Incidentes no Mapa</string>
+    
+    
+    <string name="rb_open">Aberto</string>
+    <string name="rb_working_on">Em andamento</string>
+    <string name="rb_solved">Resolvido</string>
+    <string name="rb_hiden">Escondido</string>
 </resources>

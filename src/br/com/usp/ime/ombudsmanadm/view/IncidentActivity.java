@@ -1,6 +1,5 @@
 package br.com.usp.ime.ombudsmanadm.view;
 
-import java.io.Serializable;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -17,7 +16,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 import br.com.usp.ime.ombudsmanadm.R;
 import br.com.usp.ime.ombudsmanadm.model.dao.IncidentDAO;
 import br.com.usp.ime.ombudsmanadm.model.dao.IncidentSqLiteDAO;
@@ -29,7 +27,6 @@ import br.com.usp.ime.ombudsmanadm.view.map.IncidentsMapActivity;
 
 public class IncidentActivity extends Activity implements IncidentSynchronizerCallBack {
 	
-	private static final int SECONDS = 1;
 	List<Incident> incidents;
 	ListView incidentListView;
 	IncidentListAdapter adapter;
@@ -50,7 +47,6 @@ public class IncidentActivity extends Activity implements IncidentSynchronizerCa
 		incidentListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Toast.makeText(getApplicationContext(), "Item clicado " + position, SECONDS).show();
 				
 				Intent intent = new Intent(IncidentActivity.this, IncidentFormActivity.class);
 				intent.putExtra("incident", (Incident) incidentListView.getItemAtPosition(position));
@@ -95,7 +91,6 @@ public class IncidentActivity extends Activity implements IncidentSynchronizerCa
 		case R.id.menu_map :
 			Log.d(IncidentActivity.class.getSimpleName(), "item mapa escolhido");
 			Intent intentTwo = new Intent(IncidentActivity.this, IncidentsMapActivity.class);
-//			intentTwo.putExtra("incidents", (Serializable)incidents);
 			startActivity(intentTwo);
 			return true;
 		default :

@@ -3,9 +3,9 @@
 	<color name="even_line">#ededea</color>
 	<color name="odd_line">#ffffff</color>
 	
-	<color name="open">#43A621</color>
-	<color name="working_on">#FF5C5C</color>
-	<color name="solved">#43A621</color>
+	<color name="open">#FF0000</color>
+	<color name="working_on">#FFCF00</color>
+	<color name="solved">#66CC33</color>
 	<color name="hiden">#AAE2FF</color>
 	
 	<color name="search_result">#999999</color>

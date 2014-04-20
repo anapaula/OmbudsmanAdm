@@ -64,7 +64,6 @@ public class LoginActivity extends Activity implements LoginTask.LoginCallback {
     }
 
     private void callIncidentActivity() {
-
         Intent incident = new Intent(this, IncidentActivity.class);
         incident.putExtra(USER, user);
         startActivity(incident);
