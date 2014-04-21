@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -141,7 +142,12 @@ public class IncidentFormActivity extends Activity {
 			e.printStackTrace();
 		}
 		
-		photoView.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+		Bitmap incidentPhoto = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+		
+		if (incidentPhoto != null) {
+			photoView.setImageBitmap(incidentPhoto);
+		}
+		
 		localView.setImageBitmap(BitmapFactory.decodeStream(imageStream));
 		id.setText(""+incident.getId());
 		user.setText(""+incident.getUser());
