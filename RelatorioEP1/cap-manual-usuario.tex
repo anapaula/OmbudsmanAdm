@@ -1,0 +1,166 @@
+%% ------------------------------------------------------------------------- %%
+\chapter{Manual do usuário}
+\label{cap:manual-usuario}
+
+% %Os relatórios serão avaliados nos seguintes aspectos:
+%Explicação do que foi implementado
+% Descrição dos métodos utilizados
+% Apresentação da facilidade/dificuldade para desenvolvimento/debug da aplicação 
+% Adotar uma estrutura da "Manual do Usuário", contemplando cada funcionalidade do app.
+
+A aplicação desenvolvida é um sistema de ouvidoria móvel, onde os usuários podem anunciar eventos ou condições que mereçam atenção das entidades de segurança e manutenção da USP. A ouvidoria móvel pode ser acessada por qualquer membro da comunidade da USP que possua uma conta no STOA. O projeto Stoa é "uma rede de colaboração dos estudantes, professores, funcionários e ex-membros da Universidade de São Paulo (USP). Os objetivos do Stoa são promover uma maior interação entre os membros da comunidade USP, criar um espaço onde cada pessoa dentro da Universidade tenha uma identidade digital de fácil acesso, tanto para quem está dentro da USP, quanto para a comunidade externa, e fornecer um sistema que facilite aos professores a administração de seus cursos para os estudantes" \cite{STOA:2014}.
+
+Para desenvolvimento do sistema de ouvidoria móvel da USP, foram criados dois aplicativos para públicos-alvo diferentes. O primeiro é o aplicativo para os usuários, ou membros da comunidade USP que possuem uma conta no STOA, e o segundo aplicativo é destinado a funcionários responsáveis pela segurança e manutenção do campus, para os quais serão encaminhadas as solicitações dos usuários. Os dois aplicativos foram desenvolvidos tendo como base os padrões de cores da USP.
+
+\section{Aplicativo do usuário}
+O aplicativo do usuário tem como principal objetivo permitir que a comunidade USP possa registrar incidentes ocorridos dentro da Cidade Universitária, informando o local do evento, com dados do GPS, e de modo a inserir registros fotográficos.
+
+Se a rede conseguir estabelecer conexão com o servidor Web, para o qual cada incidente será enviado, então o usuário será informado que seu incidente foi registrado com sucesso. O objetivo é mantê-lo informado de suas ações no sistema.
+
+Caso, não seja possível estabelecer conexão com o servidor Web, o incidente registrado pelo usuário será armazenado em um banco de dados (SQLite), de modo que o registro não é perdido. Quando os dados de incidentes forem sincronizados, a partir do aplicativo da Ouvidoria, os registros armazenados no SQLite serão enviados para o servidor Web.
+
+A aplicação do usuário possui as seguintes funcionalidades: 
+\begin{enumerate}
+\item Login
+\item Registro de incidente com o nome do usuário, descrição e nome do local do incidente, incluindo as opções de localização via GPS e inserção de foto do incidente.
+\item Compartilhar incidente (Redes Sociais, ou outras formas)
+\item Enviar dados para o servidor Web
+\item Apresentar ao usuário se o incidente foi resolvido
+\end{enumerate}
+
+%Inserir telas do aplicativo de usuário
+
+\section{Aplicativo da Ouvidoria}
+A aplicação da Ouvidoria possui as seguintes funcionalidades, que serão descritas em detalhes nas próximas seções.
+\begin{enumerate}
+\item Login
+\item Lista de Incidentes
+\item Lista de departamentos 
+\item Busca de incidentes por palavra-chave
+\item Definição de status do incidente
+\item Apresentação de incidentes em mapa
+\item Apresentação de detalhes de cada incidente registrado
+\item Sincronizar os dados dos incidentes
+\item Armazenamento de incidentes
+\end{enumerate}
+
+\subsection{Login}
+A interface inicial do sistema de Ouvidoria é a tela de Login. 
+O usuário deste aplicativo é um funcionário responsável pela segurança e manutenção da USP e que fará o tratamento dos incidentes registrados pelos membros da comunidade.
+Para que o login seja realizado com sucesso, o funcionário precisa informar o mesmo login e senha cadastrados na rede social STOA.
+
+Caso ainda não possua, o cadastro pode ser realizado por meio do link:
+http://social.stoa.usp.br/account/signup
+
+Após informar o seu número USP e senha cadastrada no STOA, o aplicativo fará a verificação da conta do usuário e caso esteja correta, será apresentada a tela para apresentação de incidentes. No primeiro acesso, nenhum incidente será apresentado, pois é necessário que o usuário clique no botão Sincronizar para buscar todos os incidentes registrados. Esse procedimento deve ser realizado sempre que o usuário desejar obter os últimos incidentes do servidor.
+
+Caso os dados de login e/ou senha estejam incorretos, o usuário receberá uma mensagem de erro informando que os dados para acesso ao sistema estavam incorretos.
+
+A partir de um segundo acesso pelo usuário, os incidentes já carregados para o aplicativo não precisarão de nova busca no servidor Web. Os novos incidentes registrados serão carregados quando o usuário clicar no botão Sincronizar da tela de apresentação de incidentes, atualizando a lista de incidentes apresentada ao usuário.
+
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=.40\textwidth]{Ouvidoria-Login} 
+  \caption{Interface de login para o aplicativo de Ouvidoria}
+  \label{fig:Ouvidoria-Login} 
+\end{figure}
+
+\subsection{Lista de Incidentes}
+O botão filtro, permite ordenar os incidentes por departamento.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=.40\textwidth]{Ouvidoria-ListaDeIncidentes} 
+  \caption{Interface de apresentação de todos os incidentes registrados}
+  \label{fig:Ouvidoria-ListaDeIncidentes} 
+\end{figure}
+
+\subsection{Lista de departamentos}
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=.40\textwidth]{Ouvidoria-MenuParaVisualizacaoDeDepartamentos} 
+  \caption{Menu para visualização dos departamentos da USP}
+  \label{fig:Ouvidoria-MenuParaVisualizacaoDeDepartamentos} 
+\end{figure}
+
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=.40\textwidth]{Ouvidoria-ListaDeDepartamentos} 
+  \caption{Interface de apresentação de todos os departamentos da USP}
+  \label{fig:Ouvidoria-ListaDeDepartamentos} 
+\end{figure}
+
+\subsection{Busca de incidentes por palavra-chave}
+O botão lupa permite que seja feita uma busca pela descrição do incidente ou pelo departamento da USP.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=.40\textwidth]{Ouvidoria-BuscaPorTermoChave} 
+  \caption{Interface para realizar a busca de incidentes por palavra-chave}
+  \label{fig:Ouvidoria-BuscaPorTermoChave} 
+\end{figure}
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=.40\textwidth]{Ouvidoria-ResultadoDaBusca} 
+  \caption{Interface para apresentação dos resultados da busca por palavra-chave}
+  \label{fig:Ouvidoria-ResultadoDaBusca} 
+\end{figure}
+
+
+\subsection{Definição de status do incidente}
+
+Toda tela que possui uma lista de incidentes, quando se clica em algum incidente vai para uma outra tela com os detalhes do incidente, mostrando a foto do incidente e sua localização no GPS. Nesta tela também é possível mudar o status do incidente. Clicando sobre o status atual será exibida uma janela popup onde será possível escolher um novo status [Aberto, Em Andamento, Resolvido, Escondido].
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=.40\textwidth]{Ouvidoria-AtualizacaoDoStatusDoIncidente} 
+  \caption{Interface para atualização do status de um incidente selecionado}
+  \label{fig:Ouvidoria-AtualizacaoDoStatusDoIncidente} 
+\end{figure}
+
+
+\subsection{Apresentação de incidentes em mapa}
+O botão mapa permite visualizar todos os incidentes no mapa. 
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=.40\textwidth]{Ouvidoria-ApresentacaoDeIncidentesNoMapa} 
+  \caption{Interface para apresentação de incidentes no mapa}
+  \label{fig:Ouvidoria-ApresentacaoDeIncidentesNoMapa} 
+\end{figure}
+
+\subsection{Apresentação de detalhes de cada incidente registrado}
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=.40\textwidth]{Ouvidoria-DetalhesDeIncidenteComStatusAberto} 
+  \caption{Interface para apresentação de detalhes de um incidente com status aberto}
+  \label{fig:Ouvidoria-DetalhesDeIncidenteComStatusAberto} 
+\end{figure}
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=.40\textwidth]{Ouvidoria-DetalhesDeIncidenteComStatusEmAndamento} 
+  \caption{Interface para apresentação de detalhes de um incidente com status em andamento}
+  \label{fig:Ouvidoria-DetalhesDeIncidenteComStatusEmAndamento} 
+\end{figure}
+
+
+
+\subsection{Sincronizar os dados dos incidentes}
+
+
+\subsection{Armazenamento de incidentes}
+
+Armazenamento de incidentes em Banco de Dados SQlite
+
+
+ 
+%Melhorar algum requisito anterior (internacionalização)  
+
+
+
+\section{Requisitos para o dispositivo móvel}
+
+Os dois aplicativos, para o usuário e para a Ouvidoria da USP, foram desenvolvidos tendo como tecnologia alvo a versão 4.4.2 do Android. Essa versão é necessária para que as funcionalidades de mapas e localização por GPS funcionem corretamente nos dispositivos móveis. A versão 1.7 do Java é utilizada para execução das duas aplicações.
