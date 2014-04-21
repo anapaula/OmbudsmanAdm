@@ -21,7 +21,6 @@ import br.com.usp.ime.ombudsmanadm.task.QueryExecutorTask.QueryExecutorCallBack;
 import br.com.usp.ime.ombudsmanadm.view.adapter.SearchListAdapter;
 
 public class SearchResultActivity extends Activity implements  QueryExecutorCallBack {
-	private static final int SECONDS = 1;
 	
 	private TextView resultSearch;
 	private ListView incidentListView;
@@ -45,7 +44,7 @@ public class SearchResultActivity extends Activity implements  QueryExecutorCall
 		incidentListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Toast.makeText(getApplicationContext(), "Item clicado " + position, SECONDS).show();
+				Toast.makeText(getApplicationContext(), "Item clicado " + position, Toast.LENGTH_SHORT).show();
 				
 				Intent intent = new Intent(SearchResultActivity.this, IncidentFormActivity.class);
 				intent.putExtra("incident", (Incident) incidentListView.getItemAtPosition(position));

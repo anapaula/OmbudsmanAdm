@@ -38,7 +38,7 @@ public class QueryExecutorTask extends AsyncTask<String, Void, List<Incident>> {
 	protected void onPostExecute(List<Incident> result) {
 		progress.dismiss();
 		
-		Toast.makeText(context, result.size() + " Incidentes recuperados", Toast.LENGTH_LONG).show();
+		Toast.makeText(context, result.size() + " Incidentes recuperados", Toast.LENGTH_SHORT).show();
 		
 		callBack.onQueryExecutorReturn(result);
 		

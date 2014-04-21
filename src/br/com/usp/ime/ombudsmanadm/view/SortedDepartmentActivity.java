@@ -1,6 +1,5 @@
 package br.com.usp.ime.ombudsmanadm.view;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.Toast;
 import br.com.usp.ime.ombudsmanadm.R;
 import br.com.usp.ime.ombudsmanadm.model.vo.Incident;
 import br.com.usp.ime.ombudsmanadm.task.IncidentSorterTask;
@@ -22,7 +20,6 @@ import br.com.usp.ime.ombudsmanadm.view.adapter.SortedIncidentListAdapter;
 
 public class SortedDepartmentActivity extends Activity implements IncidentSorterCallBack{
     
-	private static final int SECONDS = 1;
 	private ListView incidentListView;
 	private SortedIncidentListAdapter adapter;
 	private Map<String, List<Incident>> sortedIncidents;
@@ -42,12 +39,24 @@ public class SortedDepartmentActivity extends Activity implements IncidentSorter
         incidentListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Toast.makeText(getApplicationContext(), "Item clicado " + position, SECONDS).show();
-				
 				List<Incident> incidents = sortedIncidents.get(depts.get(position));
 				
 				Intent intent = new Intent(SortedDepartmentActivity.this, SortedIncidentActivity.class);
-				intent.putExtra("incidents", (Serializable)incidents);
+				
+				StringBuilder sb = new StringBuilder();
+				boolean first = true;
+				for (Incident incident : incidents) {
+					if (first) {
+						sb.append(incident.getId());
+						first = false;
+					} else {
+						sb.append(", " + incident.getId());
+					}
+				}
+				
+				first = false;
+				
+				intent.putExtra("incidentsId", sb.toString());
 				startActivity(intent);
 			}
 		});

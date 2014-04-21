@@ -17,4 +17,5 @@ public interface IncidentDAO {
 	public void delete(Incident incident);
 	public long getLastIncidentId();
 	public void close();
+	public List<Incident> getIncidentByIds(String ids);
 }

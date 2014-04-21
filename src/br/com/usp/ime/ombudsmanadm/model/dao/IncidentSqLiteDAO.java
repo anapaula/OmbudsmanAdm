@@ -119,6 +119,23 @@ public class IncidentSqLiteDAO extends SQLiteOpenHelper implements IncidentDAO {
 				new String[] { incident.getId().toString() });
 	}
 	
+	@Override
+	public List<Incident> getIncidentByIds(String ids) {
+		List<Incident> incidents = new ArrayList<Incident>();
+
+		Cursor cs = getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_NAME
+								+ " WHERE id in (" + ids + ")", null);
+
+		while (cs.moveToNext()) {
+			Incident incident = getIncidentFromCursor(cs);
+			incidents.add(incident);
+		}
+		
+		cs.close();
+
+		return incidents;
+	}
+	
 	private Incident getIncidentFromCursor(Cursor cs) {
 		Incident incident = new Incident();
 		incident.setId(cs.getLong(0));

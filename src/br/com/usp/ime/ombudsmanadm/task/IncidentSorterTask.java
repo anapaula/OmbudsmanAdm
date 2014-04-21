@@ -43,7 +43,7 @@ public class IncidentSorterTask extends AsyncTask<Object, Object, Map<String, Li
 	@Override
 	protected void onPostExecute(Map<String, List<Incident>> result) {
 		progress.dismiss();
-		Toast.makeText(context, "Incidentes ordenados com sucesso", Toast.LENGTH_LONG).show();
+		Toast.makeText(context, "Incidentes ordenados com sucesso", Toast.LENGTH_SHORT).show();
 		
 		List<String> depts = new ArrayList<>();
 		for (String dept : result.keySet()) {

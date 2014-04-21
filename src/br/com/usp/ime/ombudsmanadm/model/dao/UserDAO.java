@@ -1,13 +1,13 @@
 package br.com.usp.ime.ombudsmanadm.model.dao;
 
+import java.util.List;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 import br.com.usp.ime.ombudsmanadm.model.vo.Category;
 import br.com.usp.ime.ombudsmanadm.model.vo.User;
-
-import java.util.List;
 
 public class UserDAO extends BaseDAO {
 

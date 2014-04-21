@@ -51,7 +51,7 @@ public class LoginActivity extends Activity implements LoginTask.LoginCallback {
     @Override
     public void onLoginReturn(LoginResponse jsonResult) {
         if (jsonResult.getStatus() == false) {
-            Toast.makeText(this, "Verifique sua conexão de dados. Não foi possível efetuar o login." + jsonResult.getError(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Verifique sua conexão de dados. Não foi possível efetuar o login." + jsonResult.getError(), Toast.LENGTH_SHORT).show();
 
         } else {
             Toast.makeText(this, "Login efetuado com sucesso!", Toast.LENGTH_LONG).show();

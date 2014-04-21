@@ -19,6 +19,7 @@ import br.com.usp.ime.ombudsmanadm.model.dao.IncidentDAO;
 import br.com.usp.ime.ombudsmanadm.model.dao.IncidentSqLiteDAO;
 import br.com.usp.ime.ombudsmanadm.model.vo.Incident;
 import br.com.usp.ime.ombudsmanadm.util.ConnectionException;
+import br.com.usp.ime.ombudsmanadm.util.NetworkAvailability;
 import br.com.usp.ime.ombudsmanadm.util.WebClient;
 
 public class IncidentSynchronizerTask extends AsyncTask<Object, Object, String> {
@@ -50,8 +51,15 @@ public class IncidentSynchronizerTask extends AsyncTask<Object, Object, String> 
 		callBack.onSynchReturn();
 	}
 	
+	@SuppressWarnings("static-access")
 	@Override
 	protected String doInBackground(Object... params) {
+		if (!NetworkAvailability.check(context).is3GOn()
+				&& !NetworkAvailability.check(context).isWifiOn()) {
+			
+			return "Não foi detectado nenhuma conexão com a internet. Verifique sua conexão com a internet e clique em sincronizar novamente"; 
+		}
+		
 		IncidentDAO dao = new IncidentSqLiteDAO(context);
 		long lastId = dao.getLastIncidentId();
 		
