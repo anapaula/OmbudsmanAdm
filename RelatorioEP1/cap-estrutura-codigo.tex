@@ -17,11 +17,13 @@ O sistema trata de:
 		\item Compartilhamento de informações.
 	\end{itemize}
 \end{enumerate}
+%% ------------------------------------------------------------------------- %%
+\section{Principais classes para o aplicativo do Usuário}
 
 %% ------------------------------------------------------------------------- %%
-\section{Hierarquia de pacotes com arquivos Java}
+\section{Principais classes para o aplicativo da Ouvidoria}
 
-A Figura\ref{fig:Ouvidoria-EstruturaDoCodigo} exibe a estrutura de pastas e pacotes do aplicativo \textit{OmbudsmanAdm}, disponível em: https://github.com/rabriol/OmbudsmanAdm, que contém o conteúdo relacionado ao aplicativo acessado pelos funcionários da Segurança e Manutenção da USP.
+A Figura\ref{fig:Ouvidoria-EstruturaDoCodigo} exibe a estrutura de pastas e pacotes do aplicativo \textit{OmbudsmanAdm}, disponível em: https://github.com/rabriol/OmbudsmanAdm, que contém o conteúdo relacionado ao aplicativo acessado pelos funcionários da Segurança e Manutenção da USP. 
 
 \begin{figure}[!h]
   \centering
@@ -30,9 +32,95 @@ A Figura\ref{fig:Ouvidoria-EstruturaDoCodigo} exibe a estrutura de pastas e paco
   \label{fig:Ouvidoria-EstruturaDoCodigo} 
 \end{figure}
 
+Os pacotes do aplicativo da Ouvidoria começam com o padrão: br.com.usp.ime.ombudsmanadm. A partir desse prefixo, são adicionados os sufixos que especificam o conteúdo exato de cada pacote da pasta \textit{Source} (src). Os pacotes na hierarquia de classes Java do aplicativo da Ouvidoria finalizam com os sufixos \textit{Model, View, Preferences, Task e Util}.
+O sistema foi implementado utilizando o padrão de projeto \textit{Model-View-Controller}(MVC), por esse motivo, as classes implementadas no pacote \textit{Model}, correspondem a classes que contém a lógica de negócios do sistema, bem como a lógica de manipulação das informações armazenadas no banco de dados. As classes Java inseridas no pacote \textit{View}, constituem as classes que tratam das interfaces ou visualização do sistema e as classes que estão em \textit{View.adapter} são as que fazem a intermediação entre as classes de visualização e de negócio do sistema, de modo a implementarem o controle entre a \textit{View} e o \textit{Model}.
+
+O pacote \textit{Preferences} foi criado para gerenciar as preferências do usuário e registra quando o usuário está logado no sistema com seu identificador único. O pacote \textit{Task} contém as classes responsáveis pela comunicação com o servidor Web e que estendem a classe \textit{AsyncTask}. O pacote \textit{Util} contém as classes utilitárias do aplicativo da Ouvidoria. As principais classes Java do aplicativo da Ouvidoria serão explicados em maiores detalhes nas próximas subseções.
+
 %% ------------------------------------------------------------------------- %%
-\section{Principais classes e seus métodos}
-\label{sec:funcionalidades}
+\subsection{Principais classes do pacote Model}
+\label{sec:model}
+
+O pacote Model, a saber, br.com.usp.ime.ombudsmanadm.model é composto de Model.vo, Model.bo e Model.dao. Como dito anteriormente, o pacote Model é responsável pelas classes que implementam a lógica de negócio da aplicação e que fazem a manipulação de informações armazenadas no banco de dados.
+
+O pacote Model.vo, refere-se às classes responsáveis pelos modelos de valores de objetos, ou \textit{Value Object} (VO). São as classes que representam os principais objetos manipulados pelo sistema: \textit{Category, Incident, Status e User}. Cada um desses objetos é representado por uma classe, com exceção do Status que é representado por um Enum. Todos possuem métodos \textit{Get} e \textit{Set} de modo que seja possível acessar, visualizar e modificar seus atributos.
+
+O pacote Model.bo, refere-se às classes responsáveis pela lógica de negócios do sistema e que possui a classe \textit{IncidentConverter} que realiza a conversão de uma lista de incidentes para uma String JSON e a partir de uma String JSON obtém uma lista de Incidentes. Os métodos que realizam essas atividades, respectivamente, são: public String toJSON(List<Incident> incidents); e public List<Incident> toIncidentList(String json). Esses dois métodos são essenciais para que os dados recuperados no formato JSON do servidor Web possam ser convertidos em uma lista de incidentes que pode ser armazenada no banco de dados do sistema (SQLite) e a partir de uma lista de incidentes recuperadas do banco de dados é possível convertê-las para o formato JSON de modo a enviá-las para o servidor Web.
+
+O pacote Model.dao contém as classes e interfaces de acesso ao banco de dados SQLite. A interface \textit{IncidentDAO} é responsável por capsular os métodos implementados na classe \textit{IncidentSQLiteDAO}, que correspondem a todos os métodos de manipulação da tabela Incidente no banco de dados, a saber, \textit{insert, update, delete, getIncidents, getIncidentsByKeyValue, 
+getIncidentsById, getLastIncidentId e getIncidentById.} Além dos métodos de manipulação dos incidentes armazenados no banco, a classe também é responsável pela criação e atualização da tabela Incidentes por meio dos métodos, \textit{onCreate e onUpgrade}, respectivamente.
+ 
+A classe \textit{IncidentSQLiteDAO} além de implementar a interface \textit{IncidentDAO}, também estende a classe \textit{SQLiteOpenHelper}. A classe \textit{SQLiteOpenHelper} é uma classe utilitária para gerenciar a criação de banco de dados e a gestão de versões, onde é possível criar subclasses implementando os métodos \textit{onCreate(SQLiteDatabase), onUpgrade(SQLiteDatabase, int, int)} e a \textit{SQLiteOpenHelper} cuida de abrir o banco de dados se este existir, criá-lo caso não exista e atualizá-lo se necessário.
+
+
+A classe \textit{SQLiteBase} também estende a classe \textit{SQLiteOpenHelper} e é responsável por criar as tabelas \textit{Category} e \textit{User}, implementando os métodos \textit{onCreate} e \textit{onUpgrade}, de acordo com a herança de 
+\textit{SQLiteOpenHelper}.
+
+
+A classe abstrata \textit{BaseDAO} obtém uma instância de \textit{SQLiteBase} e define o método \textit{getDDL}, que é usado pelas classes \textit{CategoryDAO} e \textit{UserDAO}, para obter o \textit{Domain Definition Language} (DDL) das duas tabelas \textit{Category} e \textit{User}.
+
+A classe CategoryDAO estende a classe abstrata BaseDAO e portanto implementa o método \textit{getDDL} com a criação da tabela \textit{Category}. A classe possui todos os métodos de manipulação do objeto \textit{Category}, que refere-se aos departamentos da Universidade de São Paulo, portanto possui os métodos \textit{insert(Category), insert(List<Category>), getAll e 
+getCategoryFrom(Cursor)}. 
+
+A classe \textit{UserDAO} também estende a classe abstrata \textit{BaseDAO} e portanto implementa o método \textit{getDDL} com a criação da tabela \textit{User}. Assim como a classe \textit{CategoryDAO}, realiza a manipulação dos dados de usuário e 
+implementa os métodos \textit{insert(User), getUniqueUser e getUserFrom(Cursor).}
+ 
+
+%% ------------------------------------------------------------------------- %%
+\subsection{Principais classes do pacote View}
+\label{sec:view}
+
+O pacote \textit{View} contém as classes que tratam das interfaces ou visualização do sistema e as classes que estão em \textit{View.adapter} são as que fazem a intermediação entre as classes de visualização e de negócio do sistema, de modo a implementarem o controle entre a \textit{View} e o \textit{Model}.
+
+Dentro do pacote View e View.map, temos todas as classes que estão associadas a interfaces do sistema e que possuem em comum o sufixo \textit{Activity}, representando uma \textit{Activity} do \textit{Android}.
+
+A classe \textit{IncidentActivity} é responsável pela apresentação da lista de incidentes, por meio do método\textit{ onCreate(Bundle)}, por apresentar as opções de menu por meio do método \textit{onCreateOptionsMenu(Menu)} e por abrir 
+as telas de acordo com a seleção do menu por meio do método \textit{onOptionsItemSelected(MenuItem).} 
+
+As opções embora sejam descritas em código como opções de menu, são exibidas na tela por meio de ícones de acesso ao mapa, a busca por palavras-chave, entre outras opções. O método \textit{onSynchReturn} limpa a lista e traz todos os incidentes novos do 
+servidor Web após adaptá-los de \textit{Json} para uma lista de incidentes que será exibida na interface.
+
+A classe \textit{IncidentFormActivity} é responsável pela edição de um incidente cadastrado pelo usuário, por meio do aplicativo voltado para membros da comunidade USP. No aplicativo da Ouvidoria, que tem como público-alvo os funcionário da área de Segurança e Manutenção da USP, esta interface possibilita que mudem o status de tratamento de cada incidente de aberto para Em andamento, Resolvido ou Escondido. Esta interface exibe todos os detalhes cadastrados para cada incidente, incluindo foto, informações geográficas do GPS, departamento, entre outras.
+
+\textit{LoginActivity} é responsável pelo login do funcionário da USP no sistema de Ouvidoria, que será realizado baseado no cadastro do funcionário na rede STOA. A interface retornará uma mensagem de sucesso para funcionários cadastrados no STOA e retornará uma mensagem de erro caso o funcionário não possua uma conta no STOA e portanto não pode acessar o sistema. Caso o usuário efetue login com sucesso, serão inicializada a \textit{activity} para listar os incidentes deste usuário. 
+
+A classe \textit{SearchResultActivity} é responsável por exibir os resultados encontrados para a busca por palavras-chave. A interface apresenta a quantidade de resultados encontrados para a busca realizada. A classe \textit{SortedDepartmentActivity} é responsável pela ordenação dos incidentes por departamento da USP e por fim, a classe \textit{SortedIncidentActivity} é responsável pela ordenação dos incidentes.
+
+A classe \textit{IncidentsMapActivity} no pacote \textit{View.map} é responsável pela apresentação dos incidentes registrado em um mapa, de acordo com a posição GPS dos incidentes registrados. Cada incidente é apresentado com um marcador que exibe sua descrição e o departamento da USP que ocorreu. O mapa é centralizado no Instituto de Matemática e Estatística (IME) da USP. Esta classe usa a classe \textit{GoogleMap} para exibir o mapa na interface.
+
+Como classes do \textit{Controller} (Controlador) temos as classes do pacote \textit{View.Adapter} que adaptam os atributos a serem exibidos na interface de acordo com mudanças no conteúdo de cada objeto.
+
+Na classe \textit{IncidentListAdapter} os incidentes de uma lista são atualizados de acordo com a mudança de status de tratamento. Por exemplo, os incidentes com status em aberto são coloridos com a cor vermelha, definida no arquivo res/values/colors.xml. Para o status resolvido, a cor passa a ser verde, para o status em andamento a cor é amarela. O mesmo ocorre na classe \textit{SearchListAdapter}, para o resultado de uma busca. A classe \textit{SortedIncidentListAdapter} apenas configura para que cada incidente de uma lista de incidentes seja exibido com uma cor diferente de linha para facilitar a sua visualização. A cor também neste caso é definida no arquivo res/values/colors.xml.
+
+
+%% ------------------------------------------------------------------------- %%
+\subsection{Principais classes do pacote Preferences}
+\label{sec:preferences}
+Como dito anteriormente, o pacote \textit{Preferences} foi criado para gerenciar as preferências do usuário e registra quando o usuário está logado no sistema com seu identificador único. O pacote possui duas classes: \textit{SharedPreferencesManager} e \textit{Preferences}.
+
+A classe \textit{SharedPreferencesManager} gerencia as preferências compartilhadas para o aplicativo da Ouvidoria, possibilitando acessar, visualizar e atualizar as preferências para o aplicativo da Ouvidoria, por meio de métodos \textit{Get} e \textit{Set}. A classe \textit{Preferences} recupera uma instância de \textit{SharedPreferencesManager} e recupera as categorias de localização (departamentos da USP) e o usuário logado. 
+
+%% ------------------------------------------------------------------------- %%
+\subsection{Principais classes do pacote Task}
+\label{sec:task}
+O pacote \textit{Task} contém as classes responsáveis pela comunicação com o servidor Web e que estendem a classe \textit{AsyncTask}. A classe \textit{AsyncTask} permite realizar operações em \textit{background} e publicar resultados sobre a \textit{thread} de interface de usuário sem precisar manipular \textit{threads} e/ou \textit{handlers}. Esta classe foi projetada para ser uma classe utilitária em torno das classes \textit{Thread} e \textit{Handler} e não constitui um arcabouço de \textit{threading} genérico. A classe deve idealmente ser usada para curtas operações, que devem ser de poucos segundo no máximo. 
+
+A classe \textit{IncidentSorterTask} é responsável por ordenar os incidentes por departamento, utilizando-se da classe \textit{DeptConverter} para realizar a conversão de departamentos. A classe \textit{IncidentSynchronizerTask} é responsável por sincronizar o aplicativo com o servidor Web, por meio da URL http://uspservices.deusanyjunior.dj/incidente/\%s.json, de modo a obter os últimos incidentes registrados no servidor e apresentá-los na lista de incidentes do funcionário. Essa operação depende de uma conexão com a Internet, que caso não esteja ativa, retornará uma mensagem indicando que não existe conexão com a Internet para realizar a operação.
+
+A classe \textit{LoginTask} é responsável pelo login do usuário (funcionário da área de Segurança e Manutenção da USP) no aplicativo da Ouvidoria. O login e senha do usuário será verificado em https://maxwell.stoa.usp.br/plugin/stoa/authenticate. Se o usuário possuir uma conta no STOA, será retornada uma mensagem de sucesso e a tela com a lista de incidentes será apresentada. Enquanto o aplicativo acessa a url acima, uma mensagem de progresso da operação é apresentada ao usuário: "Verificando usuário.. ".
+
+A classe \textit{QueryExecutorTask} é responsável por buscar os incidentes no banco de dados e apresenta mensagem de progresso na operação para o usuário e, por fim, a classe \textit{SendIncidentsTask} é responsável por enviar os incidentes armazenados no banco de dados SQLite para o servidor Web por meio da URL: http://uspservices.deusanyjunior.dj/incidente. Também uma mensagem com o progresso da operação é exibida ao usuário.
+
+%% ------------------------------------------------------------------------- %%
+\subsection{Principais classes do pacote Util}
+\label{sec:util}
+O pacote \textit{Util} contém as classes utilitárias do aplicativo da Ouvidoria. A classe \textit{ConnectionException} trata de exceções que podem ocorrer durante a conexão com o servidor Web. A classe \textit{DeptConverter} é responsável pela conversão de uma abreviatura de departamento para o nome completo do departamento e vice-versa.
+
+A classe \textit{LoginParser} por realizar a conversão de uma string JSON que traz os dados de login, a saber, número USP, e-mail e \textit{username} para um objeto \textit{User}, e seta o objeto \textit{User} em um objeto \textit{LoginResponse} que é uma classe também no pacote \textit{Util} que representa um objeto login com os dados de login recebidos via JSON e o status recebido via JSON, sendo status Ok para quando o objeto JSON retorna um login válido ou uma string de erro que será setada em \textit{LoginResponse}, caso o login não seja efetuado com sucesso.
+
+A classe \textit{NetworkAvailability} utiliza-se da classe \textit{ConnectivityManager} para gerenciar a conectividade da rede e da classe \textit{NetworkInfo} para obter informações da rede, retornando uma classe \textit{TypeNetworkAnalyser} que retorna o tipo de rede em uso pelo usuário, verificando se é uma rede 3G, se é uma rede \textit{Wifi}.
+
+Por fim, temos a classe \textit{WebClient} que é uma classe importante para realizar a conexão com o servidor Web, implementando os métodos \textit{Http Get} e \textit{Http Post}, os quais recuperam e enviam dados via JSON para o servidor Web, respectivamente.
 
 %Breve explicação do funcionamento da implementação de cada parte significativa do programa.
 
