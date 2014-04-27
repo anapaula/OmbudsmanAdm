@@ -1,0 +1,76 @@
+%% ------------------------------------------------------------------------- %%
+\chapter{Estrutura do código}
+\label{cap:estrutura-codigo}
+
+O sistema trata de:
+\begin{enumerate}
+\item Comunicação com \textit{webservers} e autenticação de usuário:
+	\begin{itemize}
+		\item Foi utilizado um \textit{webserver} especialmente desenvolvido para o projeto com a 
+		funcionalidade de receber e responder requisições dos usuários utilizando a notação \textit{JavaScript Object Notation} (JSON).
+		\item  Será realizada a autenticação de usuário por meio do login de usuários no STOA 
+		(http://stoa.usp.br/).
+	\end{itemize}
+\item Funcionalidades extras dos dispositivos móveis:
+	\begin{itemize}
+		\item Câmera, Áudio, Vídeo, GPS, Acelerômetro.
+		\item Compartilhamento de informações.
+	\end{itemize}
+\end{enumerate}
+
+%% ------------------------------------------------------------------------- %%
+\section{Hierarquia de pacotes com arquivos Java}
+
+A Figura\ref{fig:Ouvidoria-EstruturaDoCodigo} exibe a estrutura de pastas e pacotes do aplicativo \textit{OmbudsmanAdm}, disponível em: https://github.com/rabriol/OmbudsmanAdm, que contém o conteúdo relacionado ao aplicativo acessado pelos funcionários da Segurança e Manutenção da USP.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=.40\textwidth]{Ouvidoria-EstruturaDoCodigo} 
+  \caption{Estrutura de pacotes Java do aplicativo da Ouvidoria}
+  \label{fig:Ouvidoria-EstruturaDoCodigo} 
+\end{figure}
+
+%% ------------------------------------------------------------------------- %%
+\section{Principais classes e seus métodos}
+\label{sec:funcionalidades}
+
+%Breve explicação do funcionamento da implementação de cada parte significativa do programa.
+
+
+\section{\textit{Web Services}}
+
+Para o serviço de autenticação no STOA foi necessário utilizar os seguintes dados via \textit{JavaScript Object Notation} (JSON) com um contrato via Post, passando o número USP e a senha do usuário:
+URL: https://social.stoa.usp.br/plugin/stoa/authenticate/\\
+
+Quando senha inválida: Retorna "ok":false,"error":"O par usuário/senha está incorreto."\\
+Quando senha correta: Retorna "ok":true,"nusp":"0000000","username":"xxx","email":"xxx\@usp.br".\\
+
+Os registros de incidentes são enviados por meio de um contrato via post, informado o número USP, a descrição do incidente, a categoria da localização, o valor da latitude da localização do incidente em tipo Float, longitude da localização do incidente em tipo Float e a foto do incidente, um binário da imagem em Base 64, para a seguinte URL:\\
+http://uspservices.deusanyjunior.dj/incidente\\
+
+%Contrato via Post: 
+%{
+ % "incidentrecord": {
+  %  "user": "numero\_usp",
+   % "description": "descricao\_do\_incidente",
+   % "localization": "categoria\_da\_localizacao",
+   % "latitude": "valor\_da\_latitude\_em\_float",
+   % "longitude": "valor\_da\_longitude\_em\_float",
+   % "photo": "binario\_da\_imagem\_em\_Base64"
+  %}
+%}
+
+É possível requisitar novos incidentes, solicitando o último incidente registrado:\\
+http://uspservices.deusanyjunior.dj/incidente.xml (ou .json)\\
+
+Solicitar todos os incidentes a partir de um determinado incidente:\\
+http://uspservices.deusanyjunior.dj/incidente/20.xml (ou .json)\\
+obs.: No exemplo acima, retornaria todos os incidentes a partir do vigésimo incidente.\\
+
+Solicitar incidentes em uma faixa específica:\\
+http://uspservices.deusanyjunior.dj/incidentrecords/get\_incidents.xml?first=1\&last=3\\
+obs.: Retorna todos os incidentes dentro de um intervalo especificado. No exemplo acima, retornaria a partir do incidente de id 1 até o de id 3.\\
+
+Solicitar incidentes em uma faixa específica em uma determinada localização:\\
+http://uspservices.deusanyjunior.dj/incidentrecords/get\_incidents.xml?first=1\&last=3\&localization=\\Instituto\%20de\%20Matemática\%20e\%20Estatística\\
+obs.: No exemplo acima, retornaria todos os incidentes a partir do id 1 até o id 3 que fazem parte do Instituto de Matemática e Estatística da USP (IME).\\
