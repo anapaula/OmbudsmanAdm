@@ -120,8 +120,12 @@ public class IncidentFormActivity extends Activity {
 					alertDialog.show();
 		}});
 		
-		byte[] bytes = Base64.decode(incident.getPhoto(), Base64.DEFAULT);
-		
+		byte[] bytes = null;
+		try {
+			bytes = Base64.decode(incident.getPhoto(), Base64.DEFAULT);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		String latlon = incident.getLatitude() + "," + incident.getLongitude();
 		String mapStaticUrl ="http://maps.google.com/maps/api/staticmap?" +
@@ -142,7 +146,11 @@ public class IncidentFormActivity extends Activity {
 			e.printStackTrace();
 		}
 		
-		Bitmap incidentPhoto = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+		Bitmap incidentPhoto = null; 
+			
+		if (bytes != null) {
+			incidentPhoto = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+		}
 		
 		if (incidentPhoto != null) {
 			photoView.setImageBitmap(incidentPhoto);
