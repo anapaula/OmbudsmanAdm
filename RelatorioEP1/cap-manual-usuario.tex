@@ -17,71 +17,6 @@ Para desenvolvimento do sistema de ouvidoria móvel da USP, foram criados dois ap
 
 Os dois aplicativos, do usuário membro da comunidade USP e da Ouvidoria, para funcionários da Segurança e Manutenção da USP, foram desenvolvidos tendo como tecnologia alvo a versão 4.4.2 do Android. Essa versão é necessária para que as funcionalidades de mapas e localização por GPS implementadas funcionem corretamente nos dispositivos móveis. A versão 1.7 do Java é utilizada para execução das duas aplicações.
 
-\section{Aplicativo do usuário}
-O aplicativo do usuário tem como principal objetivo permitir que a comunidade USP possa registrar incidentes ocorridos dentro da Cidade Universitária, informando o local do evento, com dados do GPS, e de modo a inserir registros fotográficos.
-
-Se a rede conseguir estabelecer conexão com o servidor Web, para o qual cada incidente será enviado, então o usuário será informado que seu incidente foi registrado com sucesso. O objetivo é mantê-lo informado de suas ações no sistema.
-
-Caso, não seja possível estabelecer conexão com o servidor Web, o incidente registrado pelo usuário será armazenado em um banco de dados (SQLite), de modo que o registro não é perdido. Quando os dados de incidentes forem sincronizados, a partir do aplicativo da Ouvidoria, os registros armazenados no SQLite serão enviados para o servidor Web.
-
-A aplicação do usuário possui as seguintes funcionalidades, que serão descritas em detalhes nas próximas seções.: 
-\begin{enumerate}
-\item Login
-\item Registro e envio de incidente
-\item Lista de incidentes não anviados
-\end{enumerate}
-
-%Inserir telas do aplicativo de usuário
-\subsection{Login}
-A interface inicial do sistema do Usuário é a tela de Login apresentada na Figura\ref{fig:Ouvidoria-Login}. 
-
-O usuário deste aplicativo pode ser qualquer pessoa que possua um número USP e deseja registrar algum incidente para que os responsávei o tratem.
-
-Para que o login seja realizado com sucesso, o usuário precisa informar o mesmo login e senha cadastrados na rede social STOA. Caso ainda não possua cadastro na rede social, este pode ser realizado por meio do link:
-http://social.stoa.usp.br/account/signup
-
-Após informar o seu número USP e senha cadastrada no STOA, o aplicativo fará a verificação da conta do usuário e caso esteja correta, será apresentada a tela para apresentação de incidentes. Caso os dados de login e/ou senha estejam incorretos, o usuário receberá uma mensagem de erro informando que os dados para acesso ao sistema estavam incorretos. Caso não haja conexão com a internet, o mesmo será informado disso.
-
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=.40\textwidth]{Usuario-Login} 
-  \caption{Interface de login para o aplicativo do Usuário}
-  \label{fig:Usuario-Login} 
-\end{figure}
-
-\subsection{Registro e envio de incidente}
-A tela de novo incidentes apresenta os campos a serem preenchidos para registro e envio de um novo incidente.
-
-Nesta tela deverão ser preenchidas as seguintes informações e depois clicar em "Salvar":
-
-\begin{enumerate}
-\item Categoria - Basta iniciar a digitação que será exibida uma lista de categorias pré-existentes.
-\item Descrição do incidente - Preencher com uma breve descrição o incidente.
-\item Salvar - Botão no canto superior direito ao qual realiza o envio dos dados do incidente ao servidor no caso de haver conexão de dados, do contrário, salva o incidente no banco de dados local para envio posterior, quando houver conexão.
-\end{enumerate}
-
-A Figura\ref{fig:Usuario-Incidente_Novo} apresenta a interface para o registo e envio de incidentes.
-
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=.40\textwidth]{Usuario-Incidente_Novo} 
-  \caption{Interface de apresentação para inserir um novo incidente}
-  \label{fig:Usuario-Incidente_Novo} 
-\end{figure}
-
-\subsection{Lista de incidentes não anviados}
-Nesta parte do sistema de Usuário é exibida a lista de incidentes que foram salvos porém ainda não enviados ao servidor por falta de conexão de dados no momento do salvamento. Os incidentes nesta lista serão enviados ao servidor automaticamente assim que uma conexão de dados for identificada. Após o envio com sucesso, serão retirados desta lista.
-
-A Figura\ref{fig:Usuario-ListaIncidentesPendentes} apresenta a interface com a lista de incidentes pendentes de envio.
-
-\newpage
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=.40\textwidth]{Usuario-ListaIncidentesPendentes} 
-  \caption{Interface de apresentação da lista de incidentes pendentes de envio}
-  \label{fig:Usuario-Incidente_Novo} 
-\end{figure}
-
 \section{Aplicativo da Ouvidoria}
 A aplicação da Ouvidoria possui as seguintes funcionalidades, que serão descritas em detalhes nas próximas seções.
 \begin{enumerate}
@@ -222,3 +157,68 @@ O botão para exibição dos incidentes no mapa (ícone de mapa) permite visualizar 
 O botão Sincronizar (ícone de sincronização) apresentado na interface de Lista de incidentes permite que o usuário recupere todos os incidentes que ainda não foram baixados para seu aplicativo local. Esse é o motivo pelo qual, quando o usuário acessa pela primeira vez a tela de incidentes, a tela será apresentada sem nenhum incidente. É preciso clicar no botão de Sincronização para ter acesso aos incidentes registrados no Servidor Web e carregá-los para o aplicativo local. A partir de um segundo acesso à interface de Lista de incidentes, apenas os últimos incidentes registrados no servidor e que ainda não foram carregados no aplicativo local serão recuperados, agilizando o processo de sincronização e atualização dos dados. 
 
 Os incidentes registrados pelos usuários são enviados diretamente para o Servidor Web. Caso algum problema ocorra no envio, por exemplo, caso o usuário esteja sem acesso à Internet, então os dados do incidente registrado no aplicativo do Usuário (membro da comunidade USP) são armazenados em um banco de dados local (SQLite) de modo que quando o usuário clique no botão Sincronizar os dados dos incidentes do Aplicativo da Ouvidoria, os incidentes armazenados apenas no banco de dados local (SQLite), possam ser enviados para o servidor Web, mantendo todos os dados atualizados. 
+
+\section{Aplicativo do usuário}
+O aplicativo do usuário tem como principal objetivo permitir que a comunidade USP possa registrar incidentes ocorridos dentro da Cidade Universitária, informando o local do evento, com dados do GPS, e de modo a inserir registros fotográficos.
+
+Se a rede conseguir estabelecer conexão com o servidor Web, para o qual cada incidente será enviado, então o usuário será informado que seu incidente foi registrado com sucesso. O objetivo é mantê-lo informado de suas ações no sistema.
+
+Caso, não seja possível estabelecer conexão com o servidor Web, o incidente registrado pelo usuário será armazenado em um banco de dados (SQLite), de modo que o registro não é perdido. Quando os dados de incidentes forem sincronizados, a partir do aplicativo da Ouvidoria, os registros armazenados no SQLite serão enviados para o servidor Web.
+
+A aplicação do usuário possui as seguintes funcionalidades, que serão descritas em detalhes nas próximas seções.: 
+\begin{enumerate}
+\item Login
+\item Registro e envio de incidente
+\item Lista de incidentes não anviados
+\end{enumerate}
+
+%Inserir telas do aplicativo de usuário
+\subsection{Login}
+A interface inicial do sistema do Usuário é a tela de Login apresentada na Figura\ref{fig:Ouvidoria-Login}. 
+
+O usuário deste aplicativo pode ser qualquer pessoa que possua um número USP e deseja registrar algum incidente para que os responsávei o tratem.
+
+Para que o login seja realizado com sucesso, o usuário precisa informar o mesmo login e senha cadastrados na rede social STOA. Caso ainda não possua cadastro na rede social, este pode ser realizado por meio do link:
+http://social.stoa.usp.br/account/signup
+
+Após informar o seu número USP e senha cadastrada no STOA, o aplicativo fará a verificação da conta do usuário e caso esteja correta, será apresentada a tela para apresentação de incidentes. Caso os dados de login e/ou senha estejam incorretos, o usuário receberá uma mensagem de erro informando que os dados para acesso ao sistema estavam incorretos. Caso não haja conexão com a internet, o mesmo será informado disso.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=.40\textwidth]{Usuario-Login} 
+  \caption{Interface de login para o aplicativo do Usuário}
+  \label{fig:Usuario-Login} 
+\end{figure}
+
+\subsection{Registro e envio de incidente}
+A tela de novo incidentes apresenta os campos a serem preenchidos para registro e envio de um novo incidente.
+
+Nesta tela deverão ser preenchidas as seguintes informações e depois clicar em "Salvar":
+
+\begin{enumerate}
+\item Categoria - Basta iniciar a digitação que será exibida uma lista de categorias pré-existentes.
+\item Descrição do incidente - Preencher com uma breve descrição o incidente.
+\item Salvar - Botão no canto superior direito ao qual realiza o envio dos dados do incidente ao servidor no caso de haver conexão de dados, do contrário, salva o incidente no banco de dados local para envio posterior, quando houver conexão.
+\end{enumerate}
+
+A Figura\ref{fig:Usuario-Incidente_Novo} apresenta a interface para o registo e envio de incidentes.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=.40\textwidth]{Usuario-Incidente_Novo} 
+  \caption{Interface de apresentação para inserir um novo incidente}
+  \label{fig:Usuario-Incidente_Novo} 
+\end{figure}
+
+\subsection{Lista de incidentes não anviados}
+Nesta parte do sistema de Usuário é exibida a lista de incidentes que foram salvos porém ainda não enviados ao servidor por falta de conexão de dados no momento do salvamento. Os incidentes nesta lista serão enviados ao servidor automaticamente assim que uma conexão de dados for identificada. Após o envio com sucesso, serão retirados desta lista.
+
+A Figura\ref{fig:Usuario-ListaIncidentesPendentes} apresenta a interface com a lista de incidentes pendentes de envio.
+
+\newpage
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=.40\textwidth]{Usuario-ListaIncidentesPendentes} 
+  \caption{Interface de apresentação da lista de incidentes pendentes de envio}
+  \label{fig:Usuario-Incidente_Novo} 
+\end{figure}
