@@ -4,17 +4,17 @@
 
 O sistema trata de:
 \begin{enumerate}
-\item Comunicação com \textit{webservers} e autenticação de usuário:
+\item Comunicação com \textit{webservers} e autenticação de usuário:
 	\begin{itemize}
-		\item Foi utilizado um \textit{webserver} especialmente desenvolvido para o projeto com a 
-		funcionalidade de receber e responder requisições dos usuários utilizando a notação \textit{JavaScript Object Notation} (JSON).
-		\item  Será realizada a autenticação de usuário por meio do login de usuários no STOA 
+		\item Foi utilizado um \textit{webserver} especialmente desenvolvido para o projeto com a 
+		funcionalidade de receber e responder requisições dos usuários utilizando a notação \textit{JavaScript Object Notation} (JSON).
+		\item  Será realizada a autenticação de usuário por meio do login de usuários no STOA 
 		(http://stoa.usp.br/).
 	\end{itemize}
-\item Funcionalidades extras dos dispositivos móveis:
+\item Funcionalidades extras dos dispositivos móveis:
 	\begin{itemize}
-		\item Câmera, Áudio, Vídeo, GPS, Acelerômetro.
-		\item Compartilhamento de informações.
+		\item Câmera, Áudio, Vídeo, GPS, Acelerômetro.
+		\item Compartilhamento de informações.
 	\end{itemize}
 \end{enumerate}
 
@@ -129,6 +129,20 @@ Os pacotes do aplicativo do usuário começam com o padrão br.com.ouvidoria.client
 
 As classes no pacote Dao fazem acesso e manipulam informações armazenadas no banco de dados. O pacote Location é responsável pela implementação para ter acesso à localização do usuário. O pacote Model contém a lógica de negócios do sistema. O pacote Preferences é responsável pela configuração de preferências do usuário. O pacote Receiver é responsável por enviar uma mensagem ao usuário quando o incidente por ele registrado for recebido com sucesso no servidor Web. O pacote Task executa tarefas por meio da conexão com o servidor Web. O pacote útil contém todos as classes utilitárias que são utilizadas para garantir a execução do projeto. O pacote View é responsável pelo tratamento das interfaces ou visualização do sistema e por fim, o pacote Web que contém a classe WebClient, principal responsável pela conexão com o servidor Web via JSON.
 
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=.40\textwidth]{Usuario-Codigo1} 
+  \caption{Primaira parte da estrutura de pacotes Java do aplicativo d Usuário}
+  \label{fig:Usuario-Codigo1} 
+\end{figure}
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=.40\textwidth]{Usuario-Codigo2} 
+  \caption{Segunda parte da estrutura de pacotes Java do aplicativo d Usuário}
+  \label{fig:Usuario-Codigo2} 
+\end{figure}
+
 \subsection{Principais classes do pacote Dao}
 O pacote \textit{Dao} contém as classes de acesso ao banco de dados SQLite. A classe \textit{SQLiteBase} estende a classe \textit{SQLiteOpenHelper}, como descrito na seção \ref{sec:model}, sobre Model.Dao. A classe tem o objetivo de criar o banco OuvidoriaBD e todas as tabelas do aplicativo do usuário, a saber, \textit{Category, Incident e User.}
 
@@ -149,17 +163,51 @@ O pacote Preferences contém as classes \textit{SharedPreferencesManager} e \text
 O pacote \textit{Receiver} contém a classe \textit{ConectionReceiver}. A classe ConectionReceiver estende a classe \textit{BroadcastReceiver} e implementa o método \textit{onReceive}, responsável por enviar uma mensagem ao usuário quando o incidente por ele registrado for recebido com sucesso pelo servidor Web. O incidente enviado para o servidor Web é removido do banco de dados SQLite.
 
 \subsection{Principais classes do pacote Task}
-O pacote \textit{Task} contém as classes responsáveis pela comunicação com o servidor Web e que estendem a classe \textit{AsyncTask}. A classe \textit{AsyncTask} permite realizar operações em \textit{background} e publicar resultados sobre a \textit{thread} de interface de usuário sem precisar manipular \textit{threads} e/ou \textit{handlers}. Esta classe foi projetada para ser uma classe utilitária em torno das classes \textit{Thread} e \textit{Handler} e não constitui um arcabouço de \textit{threading} genérico. A classe deve idealmente ser usada para curtas operações, que devem ser de poucos segundo no máximo.
+O pacote \textit{Task} contém as classes responsáveis pela comunicação com o servidor Web e que estendem a classe \textit{AsyncTask}. A classe \textit{AsyncTask} permite realizar operações em \textit{background} e publicar resultados sobre a \textit{thread} de interface de usuário sem precisar manipular \textit{threads} e/ou \textit{handlers}. Esta classe foi projetada para ser uma classe utilitária em torno das classes \textit{Thread} e \textit{Handler} e não constitui um arcabouço de 
+\textit{threading} genérico. A classe deve idealmente ser usada para curtas operações, 
+que devem ser de poucos segundo no máximo.
+
+A classe CategoryTask é responsável por recuperar as categorias de local do servidor Web. As categorias são os departamentos da USP. A classe estende AsyncTask e recupera as categorias por meio da 
+URL http://uspservices.deusanyjunior.dj/categoriaslocal.json.
+
+A classe \textit{LoginParser} é resposável por realizar a conversão de uma string JSON que traz os dados de login e \textit{status} de login, a saber: número USP, e-mail, \textit{username} e \textit{status} para o objeto \textit{LoginResponse}. Esta classe contém informações se o login foi efetuado com sucesso ou não e as respectivas informações de erro ou informações do login.
+
+A classe \textit{SendIncidentTask} é responsável por enviar os incidentes para o servidor Web por meio da URL: http://uspservices.deusanyjunior.dj/incidente. Ela também exibe uma mensagem com o progresso da operação para o usuário.
+
+A classe \textit{SendIncidentBackgroundTask} fica atenta as alterações de conexão de dados e quando identifica uma conexão ativa, verifica se há incidentes no banco de dados, havendo, os envia para o servidor Web por meio da URL: http://uspservices.deusanyjunior.dj/incidente. Apenas haverá incidentes no banco de dados caso no momento do salvamento do incidente, não foi possível enviá-lo ao servidor por falta de conexão de dados. Após o envio em background do incidente, é enviada uma mensagem informativa ao usuário e apagado do banco o incidente em questão.
+
+Dentro do pacote \textit{Task}, exite o pacote parser, que contém as classes responsáveis 
+pela conversão dos objetos para JSON e vice-versa. A classe \textit{CategoryParser} 
+realiza a conversão de uma string JSON para uma lista de Category.
+A classe \textit{IncidentParser} realiza a conversão de um \textit{Incident} para uma string 
+JSON. E por fim, a classe \textit{LoginParser} realiza a conversão de uma string JSON para um objeto 
+\textit{LoginResponse}.
 
 \subsection{Principais classes do pacote Util}
+
+O pacote Util contém as classes ImageUtil, MassageUtil e NetworkUtil para auxiliarem respectivamente no tratamento de imagens, mensagens e conexão com a rede. A classe \textit{ImageUtil} se utiliza das classes \textit{Bitmap}, \textit{ByteArrayOutputStream}, \textit{Base64} e \textit{BitmapFactory} que torna possível recuperar a imagem no formato de 64bits.
+
 \subsection{Principais classes do pacote View}
+O pacote \textit{View} contém as classes responsáveis pela visualização das informações pelo usuário. 
+
+A classe \textit{ListIncidentFragment} é responsável pela visualização da lista de incidentes pendentes de envio ao servidor. Ela extende a classe \textit{Fragment} que faz parte da API Fragment que auxilia na criação de telas responsivas.
+
+A classe \textit{LoginActivity} é resposável pela visualização da tela de login ao qual o usuário usa para se logar no sistema. Ela extende de \textit{Activity} que é a classe responsável pela criação de telas no Android.
+
+A classe \textit{MainActivity} é responsável por compôr menu e conteúdo de tela e por realizar a transição dos fragmentos criados.
+
+A classe \textit{NavigationDrawerFragment} é responsável por montar e exibir o menu lateral denominado padrão \textit{Navigation Drawer}. 
+
+A classe \textit{NewIncidentFragment} é responsável por apresentar a tela de cadastro do incidente a ser enviado ao servidor. Esta é a tela apresentada imediatamente após realizado com sucesso o login. Ela extende a classe \textit{Fragment} que faz parte da API Fragment que auxilia na criação de telas responsivas. 
+
+
 \subsection{Principais classes do pacote Web}
 
-
+O pacote Web contém a classe WebClient, principal responsável pela conexão com o servidor Web via JSON. A classe \textit{WebClient} é uma classe importante para realizar a conexão com o servidor Web, implementando os métodos \textit{Http Get} e \textit{Http Post}, os quais recuperam e enviam dados via JSON para o servidor Web, respectivamente.
 
 \section{\textit{Web Services}}
 
-Para o serviço de autenticação no STOA foi necessário utilizar os seguintes dados via \textit{JavaScript Object Notation} (JSON) com um contrato via Post, passando o número USP e a senha do usuário:
+Para o serviço de autenticação no STOA foi necessário utilizar os seguintes dados via \textit{JavaScript Object Notation} (JSON) com um contrato via Post, passando o número USP e a senha do usuário:
 URL: https://social.stoa.usp.br/plugin/stoa/authenticate/\\
 
 Quando senha inválida: Retorna "ok":false,"error":"O par usuário/senha está incorreto."\\
